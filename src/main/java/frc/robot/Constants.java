@@ -48,4 +48,14 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+  public static class ElevatorConstants
+  {
+    public static final int elevatorMotorID = 1;
+    public static final int elevatorEncoderID = 1;
+    public static final double L1Position = 1;
+    public static final double L2Position = 1;
+    public static final double L3Position = 1;
+    public static final double L4Position = 1;
+    
+  }
 }
