@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsytem extends SubsystemBase{
-    private final SparkMax armMotor = new SparkMax(0, MotorType.kBrushless);
-    private final DutyCycleEncoder encoder = new DutyCycleEncoder(0);
+    private final SparkMax armMotor = new SparkMax(15, MotorType.kBrushless);
+    private final DutyCycleEncoder encoder = new DutyCycleEncoder(1);
     private final PIDController pidController = new PIDController(0, 0, 0);
 
 public ArmSubsytem() {

@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSubsytem extends SubsystemBase{
-    private final SparkMax intakeMotor = new SparkMax(0, MotorType.kBrushless);
-    private final SparkMax intakePivotMotor = new SparkMax(0, MotorType.kBrushless);
-    private final DutyCycleEncoder encoder = new DutyCycleEncoder(0);
+    private final SparkMax intakeMotor = new SparkMax(17, MotorType.kBrushless);
+    private final SparkMax intakePivotMotor = new SparkMax(18, MotorType.kBrushless);
+    private final DutyCycleEncoder encoder = new DutyCycleEncoder(3);
     private final PIDController pidController = new PIDController(0, 0, 0);
-    private final DigitalInput sensor = new DigitalInput(0);
+    private final DigitalInput sensor = new DigitalInput(4);
 
 public IntakeSubsytem() {
 }
