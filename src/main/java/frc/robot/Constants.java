@@ -50,12 +50,32 @@ public final class Constants
   }
   public static class ElevatorConstants
   {
-    public static final int elevatorMotorID = 1;
-    public static final int elevatorEncoderID = 1;
+    public static final int elevatorMotorID = 14; 
+    public static final int elevatorMotor1ID = 15; 
+   // public static final int elevatorEncoderID = 1;
+    public static final int sensorID = 1;
+    public static final double stowPosition = 1;
+    public static final double intakePosition = 1;
     public static final double L1Position = 1;
-    public static final double L2Position = 1;
-    public static final double L3Position = 1;
-    public static final double L4Position = 1;
-    
+    public static final double L2Position = 7.68554;
+    public static final double L3Position = 14.0;
+    public static final double L4Position = 24.3842;
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kG = 0;
+    public static final int limitSwitchChannel = 0;
+  }
+
+  public static class ArmConstants {
+
+    public static final int armMotorID = 16;
+    public static final int armEncoderID = 1;
+    public static final double armScoringPosition = 1;
+    public static final double leftIntakePosition = 1;
+    public static final double rightIntakePosition = 1;
+    public static final double armVerticalPosition = 1;
+
+  
   }
 }

@@ -19,20 +19,17 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.IntakeSubsytem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
- * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
- * Instead, the structure of the robot (including subsystems, commands, and trigger mappings) should be declared here.
- */
+
 public class RobotContainer
 {
 
@@ -44,11 +41,25 @@ public class RobotContainer
                                                                                 "swerve/neo"));
   private final ArmSubsytem armSubsystem = new ArmSubsytem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  private final IntakeSubsytem intakeSubsytem = new IntakeSubsytem();
-  private final Command scoreL1 = new ParallelCommandGroup
-  (Commands.run(()-> elevatorSubsystem.setMotorPosition(5), elevatorSubsystem), 
-  Commands.run(()->armSubsystem.setMotorPosition(5), armSubsystem));
 
+  private Command score(double position, double side) {
+    return new SequentialCommandGroup(
+      Commands.run(()-> elevatorSubsystem.setMotorPosition(position), elevatorSubsystem), 
+      Commands.run(()->armSubsystem.setMotorPosition(side), armSubsystem),
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
+  }
+
+  private final Command scoreLeftL2 = score(ElevatorConstants.L2Position,ArmConstants.leftIntakePosition);
+  private final Command scoreRightL2 = score(ElevatorConstants.L2Position,ArmConstants.rightIntakePosition);
+  private final Command scoreLeftL3 = score(ElevatorConstants.L3Position,ArmConstants.leftIntakePosition);
+  private final Command scoreRightL3 = score(ElevatorConstants.L3Position,ArmConstants.rightIntakePosition);
+  private final Command scoreLeftL4 = score(ElevatorConstants.L4Position,ArmConstants.leftIntakePosition);
+  private final Command scoreRightL4 = score(ElevatorConstants.L4Position,ArmConstants.rightIntakePosition);
+
+  private final Command intakeCoral = new SequentialCommandGroup(
+  Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.leftIntakePosition),armSubsystem),
+  Commands.run(()-> elevatorSubsystem.intakeCoral()),
+  Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.armVerticalPosition)));
   // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
   // controls are front-left positive
@@ -135,6 +146,7 @@ public class RobotContainer
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+  
   }
 
   /**
@@ -146,6 +158,13 @@ public class RobotContainer
    */
   private void configureBindings()
   {
+    elevatorSubsystem.setDefaultCommand(Commands.run(()->{
+      elevatorSubsystem.setMotor(MathUtil.applyDeadband(operatorController.getLeftY(),0.05));
+    }, elevatorSubsystem));
+
+    armSubsystem.setDefaultCommand(Commands.run(()->{
+      armSubsystem.setMotor(MathUtil.applyDeadband(operatorController.getRawAxis(5),0.05));
+    }, armSubsystem));
     // (Condition) ? Return-On-True : Return-on-False
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
                                 driveFieldOrientedAnglularVelocity :
