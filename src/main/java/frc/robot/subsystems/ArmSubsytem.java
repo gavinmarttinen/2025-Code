@@ -17,12 +17,14 @@ public class ArmSubsytem extends SubsystemBase{
     private final PIDController pidController = new PIDController(0, 0, 0);
 
 public ArmSubsytem() {
-     System.out.println(encoder.get());
-    SmartDashboard.putNumber("armEncoder",encoder.get());
+    // System.out.println(encoder.get());
+    
 }
 
 @Override
 public void periodic() {
+    System.out.println("arm Encoder " + encoder.get());
+    SmartDashboard.putNumber("armEncoder",encoder.get());
 }
 
 public void setMotorPosition(double setpoint) {

@@ -54,16 +54,17 @@ public final class Constants
     public static final int elevatorMotor1ID = 15; 
    // public static final int elevatorEncoderID = 1;
     public static final int sensorID = 1;
-    public static final double stowPosition = 1;
-    public static final double intakePosition = 1;
+    public static final double stowPosition = 6.766;
+    public static final double intakePosition = 2.95;
     public static final double L1Position = 1;
-    public static final double L2Position = 7.68554;
-    public static final double L3Position = 14.0;
-    public static final double L4Position = 24.3842;
-    public static final double kP = 0;
+    public static final double L2Position = 5.24;
+    public static final double L3Position = 10.85;
+    public static final double L4Position = 16.3;
+    public static final double highestPosition = 22.67;
+    public static final double kP = 0.8; //0.25
     public static final double kI = 0;
     public static final double kD = 0;
-    public static final double kG = 0;
+    public static final double kG = 0.4;
     public static final int limitSwitchChannel = 0;
   }
 

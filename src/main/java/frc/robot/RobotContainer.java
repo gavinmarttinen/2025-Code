@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
@@ -60,7 +62,7 @@ public class RobotContainer
   Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.leftIntakePosition),armSubsystem),
   Commands.run(()-> elevatorSubsystem.intakeCoral()),
   Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.armVerticalPosition)));
-  // Applies deadbands and inverts controls because joysticks
+    // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
   // controls are front-left positive
   // left stick controls translation
@@ -159,7 +161,7 @@ public class RobotContainer
   private void configureBindings()
   {
     elevatorSubsystem.setDefaultCommand(Commands.run(()->{
-      elevatorSubsystem.setMotor(MathUtil.applyDeadband(operatorController.getLeftY(),0.05));
+      elevatorSubsystem.setMotor(MathUtil.applyDeadband(-operatorController.getLeftY(),0.05));
     }, elevatorSubsystem));
 
     armSubsystem.setDefaultCommand(Commands.run(()->{
@@ -188,7 +190,18 @@ public class RobotContainer
     } else
     {
        driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-    //   driverController.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+       operatorController.square().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L2Position),elevatorSubsystem));
+       operatorController.triangle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L3Position),elevatorSubsystem));
+       operatorController.circle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem));
+       operatorController.cross().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
+       operatorController.button(10).onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem));
+      // driverController.L1().onTrue(Commands.runOnce(SignalLogger::start));
+       //driverController.L2().onTrue(Commands.runOnce(SignalLogger::stop));
+       //driverController.triangle().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+     // driverController.square().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+     // driverController.cross().whileTrue(elevatorSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
+     // driverController.circle().whileTrue(elevatorSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+       //   driverController.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
     //   driverController.b().whileTrue(
     //       drivebase.driveToPose(
     //           new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
