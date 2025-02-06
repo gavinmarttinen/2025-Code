@@ -165,7 +165,7 @@ public class RobotContainer
     }, elevatorSubsystem));
 
     armSubsystem.setDefaultCommand(Commands.run(()->{
-      armSubsystem.setMotor(MathUtil.applyDeadband(operatorController.getRawAxis(5),0.05));
+      armSubsystem.setMotor(0.2*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(3),0.01),2)-0.2*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(4),0.01),2));
     }, armSubsystem));
     // (Condition) ? Return-On-True : Return-on-False
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
@@ -190,11 +190,11 @@ public class RobotContainer
     } else
     {
        driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-       operatorController.square().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L2Position),elevatorSubsystem));
+       operatorController.square().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem));
        operatorController.triangle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L3Position),elevatorSubsystem));
        operatorController.circle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem));
        operatorController.cross().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
-       operatorController.button(10).onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem));
+       operatorController.button(10).onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L2Position),elevatorSubsystem));
       // driverController.L1().onTrue(Commands.runOnce(SignalLogger::start));
        //driverController.L2().onTrue(Commands.runOnce(SignalLogger::stop));
        //driverController.triangle().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));

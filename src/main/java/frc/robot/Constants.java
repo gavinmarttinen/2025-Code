@@ -75,7 +75,7 @@ public final class Constants
     public static final double armScoringPosition = 1;
     public static final double leftIntakePosition = 1;
     public static final double rightIntakePosition = 1;
-    public static final double armVerticalPosition = 1;
+    public static final double armVerticalPosition = 0.776;
 
   
   }
