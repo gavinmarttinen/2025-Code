@@ -229,8 +229,9 @@ public class RobotContainer
        operatorController.povDown().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povLeft().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povRight().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
-      driverController.R1().whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
-      driverController.square().whileTrue(Commands.run(()->autoAlignToClosestAprilTag()));
+      driverController.R2().whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
+      driverController.L1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagLeft()));
+      driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagRight()));
       // driverController.L1().onTrue(Commands.runOnce(SignalLogger::start));
        //driverController.L2().onTrue(Commands.runOnce(SignalLogger::stop));
        //driverController.triangle().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -272,8 +273,13 @@ public class RobotContainer
   {
     drivebase.setMotorBrake(brake);
   }
-  private void autoAlignToClosestAprilTag(){
+  private void autoAlignToClosestAprilTagLeft(){
     drivebase.driveFieldOriented(drivebase.getTargetSpeeds(drivebase.getClosestTagXDistance(), drivebase.getClosestTagYDistance(),
-    drivebase.getClosestAprilTagRotation()));
+    drivebase.getClosestAprilTagRotationLeft()));
   }
+  private void autoAlignToClosestAprilTagRight(){
+    drivebase.driveFieldOriented(drivebase.getTargetSpeeds(drivebase.getClosestTagXDistance(), drivebase.getClosestTagYDistance(),
+    drivebase.getClosestAprilTagRotationRight()));
+  }
+
 }

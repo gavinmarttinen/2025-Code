@@ -877,7 +877,7 @@ public class SwerveSubsystem extends SubsystemBase
   // }
 
  
-public Rotation2d getClosestAprilTagRotation(){
+public Rotation2d getClosestAprilTagRotationRight(){
   Pose2d closestTag = getPose().nearest(List.of(Field.aprilTagSixLocation,Field.aprilTagSevenLocation,Field.aprilTagEightLocation,Field.aprilTagNineLocation,Field.aprilTagTenLocation,Field.aprilTagElevenLocation,Field.aprilTagSeventeenLocation,Field.aprilTagEighteenLocation,Field.aprilTagNineteenLocation,Field.aprilTagTwentyLocation,Field.aprilTagTwentyOneLocation,Field.aprilTagTwentyTwoLocation));
   if(closestTag==Field.aprilTagSixLocation||closestTag==Field.aprilTagTwentyTwoLocation){
     return Rotation2d.fromDegrees(35);
@@ -896,6 +896,31 @@ public Rotation2d getClosestAprilTagRotation(){
   }
   else if(closestTag==Field.aprilTagElevenLocation||closestTag==Field.aprilTagSeventeenLocation){
     return Rotation2d.fromDegrees(330);
+  }
+  else{
+    return Rotation2d.fromDegrees(0);
+  }
+}
+
+public Rotation2d getClosestAprilTagRotationLeft(){
+  Pose2d closestTag = getPose().nearest(List.of(Field.aprilTagSixLocation,Field.aprilTagSevenLocation,Field.aprilTagEightLocation,Field.aprilTagNineLocation,Field.aprilTagTenLocation,Field.aprilTagElevenLocation,Field.aprilTagSeventeenLocation,Field.aprilTagEighteenLocation,Field.aprilTagNineteenLocation,Field.aprilTagTwentyLocation,Field.aprilTagTwentyOneLocation,Field.aprilTagTwentyTwoLocation));
+  if(closestTag==Field.aprilTagSixLocation||closestTag==Field.aprilTagTwentyTwoLocation){
+    return Rotation2d.fromDegrees(215);
+  }
+ else if(closestTag==Field.aprilTagSevenLocation||closestTag==Field.aprilTagTwentyOneLocation){
+    return Rotation2d.fromDegrees(270);
+  }
+ else if(closestTag==Field.aprilTagEightLocation||closestTag==Field.aprilTagTwentyLocation){
+    return Rotation2d.fromDegrees(330);
+  }
+  else if(closestTag==Field.aprilTagNineLocation||closestTag==Field.aprilTagNineteenLocation){
+    return Rotation2d.fromDegrees(30);
+  }
+  else if(closestTag==Field.aprilTagTenLocation||closestTag==Field.aprilTagEighteenLocation){
+    return Rotation2d.fromDegrees(90);
+  }
+  else if(closestTag==Field.aprilTagElevenLocation||closestTag==Field.aprilTagSeventeenLocation){
+    return Rotation2d.fromDegrees(150);
   }
   else{
     return Rotation2d.fromDegrees(0);
