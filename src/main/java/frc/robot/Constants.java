@@ -4,7 +4,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -82,22 +83,22 @@ public final class Constants
   }
 
    public static final class Field{
-    public static final Translation2d aprilTagSixLocation = new Translation2d(Units.inchesToMeters(530.49), Units.inchesToMeters(130.17));//red side
-    public static final Translation2d aprilTagSevenLocation = new Translation2d(Units.inchesToMeters(546.87), Units.inchesToMeters(158.50));//red side
-    public static final Translation2d aprilTagEightLocation = new Translation2d(Units.inchesToMeters(530.49), Units.inchesToMeters(186.83));//red side
-    public static final Translation2d aprilTagNineLocation = new Translation2d(Units.inchesToMeters(497.77), Units.inchesToMeters(186.83));//red side
-    public static final Translation2d aprilTagTenLocation = new Translation2d(Units.inchesToMeters(481.39), Units.inchesToMeters(158.50));//red side
-    public static final Translation2d aprilTagElevenLocation = new Translation2d(Units.inchesToMeters(497.77), Units.inchesToMeters(130.17));//red side
-    public static final Translation2d aprilTagTwelveLocation = new Translation2d(Units.inchesToMeters(33.51), Units.inchesToMeters(25.80));
-    public static final Translation2d aprilTagThirteenLocation = new Translation2d(Units.inchesToMeters(33.51), Units.inchesToMeters(291.20));
-    public static final Translation2d aprilTagFourteenLocation = new Translation2d(Units.inchesToMeters(325.68), Units.inchesToMeters(241.64));
-    public static final Translation2d aprilTagFifteenLocation = new Translation2d(Units.inchesToMeters(325.68), Units.inchesToMeters(75.39));
-    public static final Translation2d aprilTagSixteenLocation = new Translation2d(Units.inchesToMeters(235.73), Units.inchesToMeters(-0.15));
-    public static final Translation2d aprilTagSeventeenLocation = new Translation2d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17)); //blue side
-    public static final Translation2d aprilTagEighteenLocation = new Translation2d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50));//blue side
-    public static final Translation2d aprilTagNineteenLocation = new Translation2d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83));//blue side
-    public static final Translation2d aprilTagTwentyLocation = new Translation2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.83));//blue side
-    public static final Translation2d aprilTagTwentyOneLocation = new Translation2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50));//blue side
-    public static final Translation2d aprilTagTwentyTwoLocation = new Translation2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17));//blue side
+    public static final Pose2d aprilTagSixLocation = new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(130.17),Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagSevenLocation = new Pose2d(Units.inchesToMeters(546.87), Units.inchesToMeters(158.50),Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagEightLocation = new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(186.83),Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagNineLocation = new Pose2d(Units.inchesToMeters(497.77), Units.inchesToMeters(186.83),Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTenLocation = new Pose2d(Units.inchesToMeters(481.39), Units.inchesToMeters(158.50),Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagElevenLocation = new Pose2d(Units.inchesToMeters(497.77), Units.inchesToMeters(130.17),Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwelveLocation = new Pose2d(Units.inchesToMeters(33.51), Units.inchesToMeters(25.80),Rotation2d.fromDegrees(0));
+    public static final Pose2d aprilTagThirteenLocation = new Pose2d(Units.inchesToMeters(33.51), Units.inchesToMeters(291.20),Rotation2d.fromDegrees(0));
+    public static final Pose2d aprilTagFourteenLocation = new Pose2d(Units.inchesToMeters(325.68), Units.inchesToMeters(241.64),Rotation2d.fromDegrees(0));
+    public static final Pose2d aprilTagFifteenLocation = new Pose2d(Units.inchesToMeters(325.68), Units.inchesToMeters(75.39),Rotation2d.fromDegrees(0));
+    public static final Pose2d aprilTagSixteenLocation = new Pose2d(Units.inchesToMeters(235.73), Units.inchesToMeters(-0.15),Rotation2d.fromDegrees(0));
+    public static final Pose2d aprilTagSeventeenLocation = new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(130.17),Rotation2d.fromDegrees(0)); //blue side
+    public static final Pose2d aprilTagEighteenLocation = new Pose2d(Units.inchesToMeters(144.00), Units.inchesToMeters(158.50),Rotation2d.fromDegrees(0));//blue side
+    public static final Pose2d aprilTagNineteenLocation = new Pose2d(Units.inchesToMeters(160.39), Units.inchesToMeters(186.83),Rotation2d.fromDegrees(0));//blue side
+    public static final Pose2d aprilTagTwentyLocation = new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.83),Rotation2d.fromDegrees(0));//blue side
+    public static final Pose2d aprilTagTwentyOneLocation = new Pose2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50),Rotation2d.fromDegrees(0));//blue side
+    public static final Pose2d aprilTagTwentyTwoLocation = new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17),Rotation2d.fromDegrees(0));//blue side
   }
 }

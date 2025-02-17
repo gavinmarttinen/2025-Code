@@ -7,6 +7,8 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -195,9 +197,7 @@ public class RobotContainer
       armSubsystem.setMotor(.4*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(4),0.01),2)-.4*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(3),0.01),2));
     }, armSubsystem));
     // (Condition) ? Return-On-True : Return-on-False
-    drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
-                                driveFieldOrientedAnglularVelocity :
-                                driveFieldOrientedDirectAngleSim);
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
                                 
 
@@ -273,8 +273,7 @@ public class RobotContainer
     drivebase.setMotorBrake(brake);
   }
   private void autoAlignToClosestAprilTag(){
-    drivebase.drive(drivebase.getTargetSpeeds(MathUtil.applyDeadband(driverController.getRawAxis(1), 
-    OperatorConstants.LEFT_Y_DEADBAND), MathUtil.applyDeadband(driverController.getRawAxis(0), OperatorConstants.LEFT_Y_DEADBAND),
+    drivebase.driveFieldOriented(drivebase.getTargetSpeeds(drivebase.getClosestTagXDistance(), drivebase.getClosestTagYDistance(),
     drivebase.getClosestAprilTagRotation()));
   }
 }

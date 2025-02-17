@@ -40,10 +40,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.Field;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
@@ -874,95 +876,42 @@ public class SwerveSubsystem extends SubsystemBase
   //   }
   // }
 
-  private double aprilTagSixDistance() {
-    Translation2d aprilTagSix = Constants.Field.aprilTagSixLocation;
-    return getPose().getTranslation().getDistance(aprilTagSix);
+ 
+public Rotation2d getClosestAprilTagRotation(){
+  Pose2d closestTag = getPose().nearest(List.of(Field.aprilTagSixLocation,Field.aprilTagSevenLocation,Field.aprilTagEightLocation,Field.aprilTagNineLocation,Field.aprilTagTenLocation,Field.aprilTagElevenLocation,Field.aprilTagSeventeenLocation,Field.aprilTagEighteenLocation,Field.aprilTagNineteenLocation,Field.aprilTagTwentyLocation,Field.aprilTagTwentyOneLocation,Field.aprilTagTwentyTwoLocation));
+  if(closestTag==Field.aprilTagSixLocation||closestTag==Field.aprilTagTwentyTwoLocation){
+    return Rotation2d.fromDegrees(35);
   }
-  private double aprilTagSevenDistance() {
-    Translation2d aprilTagSeven = Constants.Field.aprilTagSevenLocation;
-    return getPose().getTranslation().getDistance(aprilTagSeven);
+ else if(closestTag==Field.aprilTagSevenLocation||closestTag==Field.aprilTagTwentyOneLocation){
+    return Rotation2d.fromDegrees(90);
   }
-  private double aprilTagEightDistance() {
-    Translation2d aprilTagEight = Constants.Field.aprilTagEightLocation;
-    return getPose().getTranslation().getDistance(aprilTagEight);
+ else if(closestTag==Field.aprilTagEightLocation||closestTag==Field.aprilTagTwentyLocation){
+    return Rotation2d.fromDegrees(150);
   }
-  private double aprilTagNineDistance() {
-    Translation2d aprilTagNine = Constants.Field.aprilTagNineLocation;
-    return getPose().getTranslation().getDistance(aprilTagNine);
+  else if(closestTag==Field.aprilTagNineLocation||closestTag==Field.aprilTagNineteenLocation){
+    return Rotation2d.fromDegrees(210);
   }
-  private double aprilTagTenDistance() {
-    Translation2d aprilTagTen = Constants.Field.aprilTagTenLocation;
-    return getPose().getTranslation().getDistance(aprilTagTen);
+  else if(closestTag==Field.aprilTagTenLocation||closestTag==Field.aprilTagEighteenLocation){
+    return Rotation2d.fromDegrees(270);
   }
-  private double aprilTagElevenDistance () {
-    Translation2d aprilTagEleven = Constants.Field.aprilTagElevenLocation;
-    return getPose().getTranslation().getDistance(aprilTagEleven);
+  else if(closestTag==Field.aprilTagElevenLocation||closestTag==Field.aprilTagSeventeenLocation){
+    return Rotation2d.fromDegrees(330);
   }
-  private double aprilTagSeventeenDistance() {
-    Translation2d aprilTagSeventeen = Constants.Field.aprilTagSeventeenLocation;
-    return getPose().getTranslation().getDistance(aprilTagSeventeen);
+  else{
+    return Rotation2d.fromDegrees(0);
   }
-  private double aprilTagEighteenDistance() {
-    Translation2d aprilTagEighteen = Constants.Field.aprilTagEighteenLocation;
-    return getPose().getTranslation().getDistance(aprilTagEighteen);
-  }
-  private double aprilTagNineteenDistance() {
-    Translation2d aprilTagNineteen = Constants.Field.aprilTagNineteenLocation;
-    return getPose().getTranslation().getDistance(aprilTagNineteen);
-  }
-  private double aprilTagTwentyDistance() {
-    Translation2d aprilTagTwenty = Constants.Field.aprilTagTwentyLocation;
-    return getPose().getTranslation().getDistance(aprilTagTwenty);
-  }
-  private double aprilTagTwentyOneDistance() {
-    Translation2d aprilTagTwentyOne = Constants.Field.aprilTagTwentyOneLocation;
-    return getPose().getTranslation().getDistance(aprilTagTwentyOne);
-  }
-  private double aprilTagTwentyTwoDistance() {
-    Translation2d aprilTagTwentyTwo = Constants.Field.aprilTagTwentyTwoLocation;
-    return getPose().getTranslation().getDistance(aprilTagTwentyTwo);
-  }
-
-  public Rotation2d getClosestAprilTagRotation() {
-    if(aprilTagSixDistance() < aprilTagElevenDistance() && aprilTagSixDistance() < aprilTagSevenDistance()) {
-      return Rotation2d.fromDegrees(20);
-    }
-    else if(aprilTagSevenDistance() < aprilTagSixDistance() && aprilTagSevenDistance() < aprilTagEightDistance()) {
-      return Rotation2d.fromDegrees(40);
-    }
-    else if(aprilTagEightDistance() < aprilTagNineDistance() && aprilTagEightDistance() < aprilTagSevenDistance()) {
-      return Rotation2d.fromDegrees(60);
-    }
-    else if(aprilTagNineDistance() < aprilTagTenDistance() && aprilTagNineDistance() < aprilTagEightDistance()) {
-      return Rotation2d.fromDegrees(40);
-    }
-    else if(aprilTagTenDistance() < aprilTagElevenDistance() && aprilTagTenDistance() < aprilTagNineDistance()) {
-      return Rotation2d.fromDegrees(50);
-    }
-    else if(aprilTagElevenDistance() < aprilTagSixDistance() && aprilTagElevenDistance() < aprilTagTenDistance()) {
-      return Rotation2d.fromDegrees(60);
-    }
-    else if(aprilTagSeventeenDistance() < aprilTagEighteenDistance() && aprilTagSeventeenDistance() < aprilTagTwentyTwoDistance()) {
-      return Rotation2d.fromDegrees(70);
-    }
-    else if(aprilTagEighteenDistance() < aprilTagNineteenDistance() && aprilTagEighteenDistance() < aprilTagSeventeenDistance()) {
-      return Rotation2d.fromDegrees(80);
-    }
-    else if(aprilTagNineteenDistance() < aprilTagTwentyDistance() && aprilTagNineteenDistance() < aprilTagEighteenDistance()) {
-      return Rotation2d.fromDegrees(90);
-    }
-    else if(aprilTagTwentyDistance() < aprilTagTwentyOneDistance() && aprilTagTwentyDistance() < aprilTagNineteenDistance()) {
-      return Rotation2d.fromDegrees(100);
-    }
-    else if(aprilTagTwentyOneDistance() < aprilTagTwentyTwoDistance() && aprilTagTwentyOneDistance() < aprilTagTwentyDistance()) {
-      return Rotation2d.fromDegrees(120);
-    }
-    else if(aprilTagTwentyTwoDistance() < aprilTagSeventeenDistance() && aprilTagTwentyTwoDistance() < aprilTagTwentyOneDistance()) {
-      return Rotation2d.fromDegrees(130);
-    }
-    else {
-      return Rotation2d.fromDegrees(0);
-    }
 }
 
+public double getClosestTagXDistance(){
+ Pose2d closestTag = getPose().nearest(List.of(Field.aprilTagSixLocation,Field.aprilTagSevenLocation,Field.aprilTagEightLocation,Field.aprilTagNineLocation,Field.aprilTagTenLocation,Field.aprilTagElevenLocation,Field.aprilTagSeventeenLocation,Field.aprilTagEighteenLocation,Field.aprilTagNineteenLocation,Field.aprilTagTwentyLocation,Field.aprilTagTwentyOneLocation,Field.aprilTagTwentyTwoLocation));
+ double x = -1*(getPose().getX() - closestTag.getX());
+ double y = getPose().getY() - closestTag.getY();
+ return x;
+}
+public double getClosestTagYDistance(){
+  Pose2d closestTag = getPose().nearest(List.of(Field.aprilTagSixLocation,Field.aprilTagSevenLocation,Field.aprilTagEightLocation,Field.aprilTagNineLocation,Field.aprilTagTenLocation,Field.aprilTagElevenLocation,Field.aprilTagSeventeenLocation,Field.aprilTagEighteenLocation,Field.aprilTagNineteenLocation,Field.aprilTagTwentyLocation,Field.aprilTagTwentyOneLocation,Field.aprilTagTwentyTwoLocation));
+  double x = getPose().getX() - closestTag.getX();
+  double y =-1*( getPose().getY() - closestTag.getY());
+  return y;
+ }
 }
