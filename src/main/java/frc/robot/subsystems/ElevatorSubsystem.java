@@ -75,6 +75,9 @@ elevatorMotor.getConfigurator().apply(talonFXConfigs);
 public void periodic() {
    // System.out.println(elevatorMotor.getPosition());
     SmartDashboard.putNumber("elevatorMotorEncoder",elevatorMotor.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("elevator motor voltage", elevatorMotor.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("elevator Motor 1 voltage", elevatorMotor1.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("elevator motor current", elevatorMotor.getSupplyCurrent().getValueAsDouble());
 }
 public void setMotor(double speed) {
     elevatorMotor.set(speed);
@@ -96,6 +99,13 @@ final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
 
 elevatorMotor.setControl(m_request.withPosition(setpoint));
 
+}
+
+public void resetEncoder(){
+   elevatorMotor.set(-0.1);
+   if(elevatorMotor.getSupplyCurrent().getValueAsDouble()>2){
+      elevatorMotor.setPosition(0);
+   }
 }
 
 private final SysIdRoutine m_sysIdRoutine =

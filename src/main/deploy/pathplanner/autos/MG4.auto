@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MG4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4Height"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VerticalPosition"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StowHeight"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

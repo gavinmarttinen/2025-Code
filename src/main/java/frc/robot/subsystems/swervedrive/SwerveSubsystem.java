@@ -19,13 +19,16 @@ import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -36,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +70,7 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * AprilTag field layout.
    */
-  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+  private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
   /**
    * Enable vision odometry updates while driving.
    */
@@ -75,6 +79,9 @@ public class SwerveSubsystem extends SubsystemBase
    * PhotonVision class to keep an accurate odometry.
    */
   private       Vision              vision;
+
+   private SwerveDrivePoseEstimator m_poseEstimator;
+     
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -126,6 +133,15 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
+
+    m_poseEstimator = new SwerveDrivePoseEstimator(
+      getKinematics(),
+      getHeading(),
+      swerveDrive.getModulePositions(),
+      new Pose2d(),
+      VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+    
   }
 
   /**
@@ -141,6 +157,13 @@ public class SwerveSubsystem extends SubsystemBase
                                   Constants.MAX_SPEED,
                                   new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
                                              Rotation2d.fromDegrees(0)));
+     m_poseEstimator = new SwerveDrivePoseEstimator(
+      getKinematics(),
+      getHeading(),
+      swerveDrive.getModulePositions(),
+      new Pose2d(),
+      VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
   }
 
   /**
@@ -154,6 +177,7 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
+    //updateOdometry();
     // When vision is enabled we must manually update odometry in SwerveDrive
     if (visionDriveTest)
     {
@@ -585,6 +609,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void resetOdometry(Pose2d initialHolonomicPose)
   {
+    m_poseEstimator.resetPosition(getHeading(),swerveDrive.getModulePositions(),initialHolonomicPose);
     swerveDrive.resetOdometry(initialHolonomicPose);
   }
 
@@ -792,4 +817,152 @@ public class SwerveSubsystem extends SubsystemBase
   {
     return swerveDrive;
   }
+  // public void updateOdometry() {
+  //   m_poseEstimator.update(
+  //       getHeading(),
+  //       swerveDrive.getModulePositions());
+
+  //   boolean useMegaTag2 = true; //set to false to use MegaTag1
+  //   boolean doRejectUpdate = false;
+  //   if(useMegaTag2 == false)
+  //   {
+  //     LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+      
+  //     if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
+  //     {
+  //       if(mt1.rawFiducials[0].ambiguity > .7)
+  //       {
+  //         doRejectUpdate = true;
+  //       }
+  //       if(mt1.rawFiducials[0].distToCamera > 3)
+  //       {
+  //         doRejectUpdate = true;
+  //       }
+  //     }
+  //     if(mt1.tagCount == 0)
+  //     {
+  //       doRejectUpdate = true;
+  //     }
+
+  //     if(!doRejectUpdate)
+  //     {
+  //       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5,.5,9999999));
+  //       m_poseEstimator.addVisionMeasurement(
+  //           mt1.pose,
+  //           mt1.timestampSeconds);
+  //     }
+  //   }
+  //   else if (useMegaTag2 == true)
+  //   {
+  //     LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+  //     LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+  //     if(Math.abs(swerveDrive.getFieldVelocity().omegaRadiansPerSecond) > 50) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+  //     {
+  //       doRejectUpdate = true;
+  //     }
+  //     if(mt2.tagCount == 0)
+  //     {
+  //       doRejectUpdate = true;
+  //     }
+  //     if(!doRejectUpdate)
+  //     {
+  //       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+  //       m_poseEstimator.addVisionMeasurement(
+  //           mt2.pose,
+  //           mt2.timestampSeconds);
+  //     }
+  //   }
+  // }
+
+  private double aprilTagSixDistance() {
+    Translation2d aprilTagSix = Constants.Field.aprilTagSixLocation;
+    return getPose().getTranslation().getDistance(aprilTagSix);
+  }
+  private double aprilTagSevenDistance() {
+    Translation2d aprilTagSeven = Constants.Field.aprilTagSevenLocation;
+    return getPose().getTranslation().getDistance(aprilTagSeven);
+  }
+  private double aprilTagEightDistance() {
+    Translation2d aprilTagEight = Constants.Field.aprilTagEightLocation;
+    return getPose().getTranslation().getDistance(aprilTagEight);
+  }
+  private double aprilTagNineDistance() {
+    Translation2d aprilTagNine = Constants.Field.aprilTagNineLocation;
+    return getPose().getTranslation().getDistance(aprilTagNine);
+  }
+  private double aprilTagTenDistance() {
+    Translation2d aprilTagTen = Constants.Field.aprilTagTenLocation;
+    return getPose().getTranslation().getDistance(aprilTagTen);
+  }
+  private double aprilTagElevenDistance () {
+    Translation2d aprilTagEleven = Constants.Field.aprilTagElevenLocation;
+    return getPose().getTranslation().getDistance(aprilTagEleven);
+  }
+  private double aprilTagSeventeenDistance() {
+    Translation2d aprilTagSeventeen = Constants.Field.aprilTagSeventeenLocation;
+    return getPose().getTranslation().getDistance(aprilTagSeventeen);
+  }
+  private double aprilTagEighteenDistance() {
+    Translation2d aprilTagEighteen = Constants.Field.aprilTagEighteenLocation;
+    return getPose().getTranslation().getDistance(aprilTagEighteen);
+  }
+  private double aprilTagNineteenDistance() {
+    Translation2d aprilTagNineteen = Constants.Field.aprilTagNineteenLocation;
+    return getPose().getTranslation().getDistance(aprilTagNineteen);
+  }
+  private double aprilTagTwentyDistance() {
+    Translation2d aprilTagTwenty = Constants.Field.aprilTagTwentyLocation;
+    return getPose().getTranslation().getDistance(aprilTagTwenty);
+  }
+  private double aprilTagTwentyOneDistance() {
+    Translation2d aprilTagTwentyOne = Constants.Field.aprilTagTwentyOneLocation;
+    return getPose().getTranslation().getDistance(aprilTagTwentyOne);
+  }
+  private double aprilTagTwentyTwoDistance() {
+    Translation2d aprilTagTwentyTwo = Constants.Field.aprilTagTwentyTwoLocation;
+    return getPose().getTranslation().getDistance(aprilTagTwentyTwo);
+  }
+
+  public Rotation2d getClosestAprilTagRotation() {
+    if(aprilTagSixDistance() < aprilTagElevenDistance() && aprilTagSixDistance() < aprilTagSevenDistance()) {
+      return Rotation2d.fromDegrees(20);
+    }
+    else if(aprilTagSevenDistance() < aprilTagSixDistance() && aprilTagSevenDistance() < aprilTagEightDistance()) {
+      return Rotation2d.fromDegrees(40);
+    }
+    else if(aprilTagEightDistance() < aprilTagNineDistance() && aprilTagEightDistance() < aprilTagSevenDistance()) {
+      return Rotation2d.fromDegrees(60);
+    }
+    else if(aprilTagNineDistance() < aprilTagTenDistance() && aprilTagNineDistance() < aprilTagEightDistance()) {
+      return Rotation2d.fromDegrees(40);
+    }
+    else if(aprilTagTenDistance() < aprilTagElevenDistance() && aprilTagTenDistance() < aprilTagNineDistance()) {
+      return Rotation2d.fromDegrees(50);
+    }
+    else if(aprilTagElevenDistance() < aprilTagSixDistance() && aprilTagElevenDistance() < aprilTagTenDistance()) {
+      return Rotation2d.fromDegrees(60);
+    }
+    else if(aprilTagSeventeenDistance() < aprilTagEighteenDistance() && aprilTagSeventeenDistance() < aprilTagTwentyTwoDistance()) {
+      return Rotation2d.fromDegrees(70);
+    }
+    else if(aprilTagEighteenDistance() < aprilTagNineteenDistance() && aprilTagEighteenDistance() < aprilTagSeventeenDistance()) {
+      return Rotation2d.fromDegrees(80);
+    }
+    else if(aprilTagNineteenDistance() < aprilTagTwentyDistance() && aprilTagNineteenDistance() < aprilTagEighteenDistance()) {
+      return Rotation2d.fromDegrees(90);
+    }
+    else if(aprilTagTwentyDistance() < aprilTagTwentyOneDistance() && aprilTagTwentyDistance() < aprilTagNineteenDistance()) {
+      return Rotation2d.fromDegrees(100);
+    }
+    else if(aprilTagTwentyOneDistance() < aprilTagTwentyTwoDistance() && aprilTagTwentyOneDistance() < aprilTagTwentyDistance()) {
+      return Rotation2d.fromDegrees(120);
+    }
+    else if(aprilTagTwentyTwoDistance() < aprilTagSeventeenDistance() && aprilTagTwentyTwoDistance() < aprilTagTwentyOneDistance()) {
+      return Rotation2d.fromDegrees(130);
+    }
+    else {
+      return Rotation2d.fromDegrees(0);
+    }
+}
+
 }

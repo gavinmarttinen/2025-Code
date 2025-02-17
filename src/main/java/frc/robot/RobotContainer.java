@@ -4,33 +4,28 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.SignalLogger;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
-
 
 public class RobotContainer
 {
@@ -61,7 +56,9 @@ public class RobotContainer
   private final Command intakeCoral = new SequentialCommandGroup(
   Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.leftIntakePosition),armSubsystem),
   Commands.run(()-> elevatorSubsystem.intakeCoral()),
-  Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.armVerticalPosition)));
+  Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.VerticalPosition)));
+
+   private final SendableChooser<Command> autoChooser;
     // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
   // controls are front-left positive
@@ -92,6 +89,13 @@ public class RobotContainer
                                                             .scaleTranslation(1)
                                                             .allianceRelativeControl(true);
 
+   SwerveInputStream driveAngularVelocitySlow = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                                                            () -> driverController.getLeftY() * .5,
+                                                            () -> driverController.getLeftX() * .5)
+                                                        .withControllerRotationAxis(()->driverController.getRightX()*-1)
+                                                        .deadband(OperatorConstants.DEADBAND)
+                                                        .scaleTranslation(1)
+                                                        .allianceRelativeControl(true);
 
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
@@ -144,11 +148,34 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+      // Register Named Commands
+      NamedCommands.registerCommand("L4Height", 
+      Commands.runOnce(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem));
+
+      NamedCommands.registerCommand("IntakeHeight", 
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem));
+
+      NamedCommands.registerCommand("StowHeight", 
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
+
+      NamedCommands.registerCommand("PreScoreLeft", 
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem));
+      
+      NamedCommands.registerCommand("PreScoreRight", 
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem));
+      
+      //NamedCommands.registerCommand("VerticalPosition", 
+      //Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(.5));
+
+      NamedCommands.registerCommand("VerticalPosition", 
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem));
+
+
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
-    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-  
+   autoChooser = AutoBuilder.buildAutoChooser("W1C1");
+   SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   /**
@@ -165,12 +192,14 @@ public class RobotContainer
     }, elevatorSubsystem));
 
     armSubsystem.setDefaultCommand(Commands.run(()->{
-      armSubsystem.setMotor(0.2*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(3),0.01),2)-0.2*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(4),0.01),2));
+      armSubsystem.setMotor(.4*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(4),0.01),2)-.4*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(3),0.01),2));
     }, armSubsystem));
     // (Condition) ? Return-On-True : Return-on-False
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
                                 driveFieldOrientedAnglularVelocity :
                                 driveFieldOrientedDirectAngleSim);
+
+                                
 
     if (Robot.isSimulation())
     {
@@ -195,6 +224,13 @@ public class RobotContainer
        operatorController.circle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem));
        operatorController.cross().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
        operatorController.button(10).onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L2Position),elevatorSubsystem));
+       operatorController.button(9).whileTrue(Commands.run(()->elevatorSubsystem.resetEncoder(), elevatorSubsystem));
+
+       operatorController.povDown().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
+       operatorController.povLeft().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
+       operatorController.povRight().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
+      driverController.R1().whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
+      driverController.square().whileTrue(Commands.run(()->autoAlignToClosestAprilTag()));
       // driverController.L1().onTrue(Commands.runOnce(SignalLogger::start));
        //driverController.L2().onTrue(Commands.runOnce(SignalLogger::stop));
        //driverController.triangle().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -211,6 +247,7 @@ public class RobotContainer
     //   driverController.back().whileTrue(Commands.none());
     //   driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
     //   driverController.rightBumper().onTrue(Commands.none());
+    
      }
 
   }
@@ -223,7 +260,7 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    return autoChooser.getSelected();
   }
 
   public void setDriveMode()
@@ -234,5 +271,10 @@ public class RobotContainer
   public void setMotorBrake(boolean brake)
   {
     drivebase.setMotorBrake(brake);
+  }
+  private void autoAlignToClosestAprilTag(){
+    drivebase.drive(drivebase.getTargetSpeeds(MathUtil.applyDeadband(driverController.getRawAxis(1), 
+    OperatorConstants.LEFT_Y_DEADBAND), MathUtil.applyDeadband(driverController.getRawAxis(0), OperatorConstants.LEFT_Y_DEADBAND),
+    drivebase.getClosestAprilTagRotation()));
   }
 }
