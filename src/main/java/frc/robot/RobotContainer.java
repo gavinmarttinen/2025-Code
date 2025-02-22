@@ -194,7 +194,14 @@ public class RobotContainer
     }, elevatorSubsystem));
 
     armSubsystem.setDefaultCommand(Commands.run(()->{
-      armSubsystem.setMotor(.4*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(4),0.01),2)-.4*Math.pow(MathUtil.applyDeadband(operatorController.getRawAxis(3),0.01),2));
+      var leftCtrl = Math.min(MathUtil.applyDeadband(operatorController.getRawAxis(4),0.01), 0.0);
+      var rotLeft = .4*Math.pow(leftCtrl, 2);
+      var rightCtrl = Math.min(MathUtil.applyDeadband(operatorController.getRawAxis(3),0.01),0.0);
+      var rotRight = .4*Math.pow(rightCtrl,2);
+      SmartDashboard.putNumber("RotLeft", rotLeft);
+      SmartDashboard.putNumber("LeftCtrl", leftCtrl);
+      SmartDashboard.putNumber("RotRight", rotRight);
+      armSubsystem.setMotor(rotLeft - rotRight);
     }, armSubsystem));
     // (Condition) ? Return-On-True : Return-on-False
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
