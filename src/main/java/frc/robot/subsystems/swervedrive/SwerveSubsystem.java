@@ -622,7 +622,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Pose2d getPose()
   {
-    return swerveDrive.getPose();
+    return m_poseEstimator.getEstimatedPosition();
   }
 
   /**
@@ -819,62 +819,62 @@ public class SwerveSubsystem extends SubsystemBase
   {
     return swerveDrive;
   }
-  // public void updateOdometry() {
-  //   m_poseEstimator.update(
-  //       getHeading(),
-  //       swerveDrive.getModulePositions());
+  public void updateOdometry() {
+    m_poseEstimator.update(
+        getHeading(),
+        swerveDrive.getModulePositions());
 
-  //   boolean useMegaTag2 = true; //set to false to use MegaTag1
-  //   boolean doRejectUpdate = false;
-  //   if(useMegaTag2 == false)
-  //   {
-  //     LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+    boolean useMegaTag2 = true; //set to false to use MegaTag1
+    boolean doRejectUpdate = false;
+    if(useMegaTag2 == false)
+    {
+      LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
       
-  //     if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
-  //     {
-  //       if(mt1.rawFiducials[0].ambiguity > .7)
-  //       {
-  //         doRejectUpdate = true;
-  //       }
-  //       if(mt1.rawFiducials[0].distToCamera > 3)
-  //       {
-  //         doRejectUpdate = true;
-  //       }
-  //     }
-  //     if(mt1.tagCount == 0)
-  //     {
-  //       doRejectUpdate = true;
-  //     }
+      if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1)
+      {
+        if(mt1.rawFiducials[0].ambiguity > .7)
+        {
+          doRejectUpdate = true;
+        }
+        if(mt1.rawFiducials[0].distToCamera > 3)
+        {
+          doRejectUpdate = true;
+        }
+      }
+      if(mt1.tagCount == 0)
+      {
+        doRejectUpdate = true;
+      }
 
-  //     if(!doRejectUpdate)
-  //     {
-  //       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5,.5,9999999));
-  //       m_poseEstimator.addVisionMeasurement(
-  //           mt1.pose,
-  //           mt1.timestampSeconds);
-  //     }
-  //   }
-  //   else if (useMegaTag2 == true)
-  //   {
-  //     LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-  //     LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-  //     if(Math.abs(swerveDrive.getFieldVelocity().omegaRadiansPerSecond) > 50) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-  //     {
-  //       doRejectUpdate = true;
-  //     }
-  //     if(mt2.tagCount == 0)
-  //     {
-  //       doRejectUpdate = true;
-  //     }
-  //     if(!doRejectUpdate)
-  //     {
-  //       m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-  //       m_poseEstimator.addVisionMeasurement(
-  //           mt2.pose,
-  //           mt2.timestampSeconds);
-  //     }
-  //   }
-  // }
+      if(!doRejectUpdate)
+      {
+        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.5,.5,9999999));
+        m_poseEstimator.addVisionMeasurement(
+            mt1.pose,
+            mt1.timestampSeconds);
+      }
+    }
+    else if (useMegaTag2 == true)
+    {
+      LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      if(Math.abs(swerveDrive.getFieldVelocity().omegaRadiansPerSecond) > 50) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+      {
+        doRejectUpdate = true;
+      }
+      if(mt2.tagCount == 0)
+      {
+        doRejectUpdate = true;
+      }
+      if(!doRejectUpdate)
+      {
+        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        m_poseEstimator.addVisionMeasurement(
+            mt2.pose,
+            mt2.timestampSeconds);
+      }
+    }
+  }
 
  
 public Rotation2d getClosestAprilTagRotationRight(){
@@ -921,6 +921,62 @@ public Rotation2d getClosestAprilTagRotationLeft(){
   }
   else if(closestTag==Field.aprilTagElevenLocation||closestTag==Field.aprilTagSeventeenLocation){
     return Rotation2d.fromDegrees(150);
+  }
+  else{
+    return Rotation2d.fromDegrees(0);
+  }
+}
+
+public Rotation2d getClosestAprilTagRotation(){
+  Pose2d closestTag = getPose().nearest(List.of(Field.aprilTagSixLocation,Field.aprilTagSevenLocation,Field.aprilTagEightLocation,Field.aprilTagNineLocation,Field.aprilTagTenLocation,Field.aprilTagElevenLocation,Field.aprilTagSeventeenLocation,Field.aprilTagEighteenLocation,Field.aprilTagNineteenLocation,Field.aprilTagTwentyLocation,Field.aprilTagTwentyOneLocation,Field.aprilTagTwentyTwoLocation));
+  if(closestTag==Field.aprilTagSixLocation||closestTag==Field.aprilTagTwentyTwoLocation){
+    
+    if(getHeading().getDegrees()<125&&getHeading().getDegrees()>-55){
+      return Rotation2d.fromDegrees(35);
+    }
+    else{
+      return Rotation2d.fromDegrees(215);
+    }
+  }
+ else if(closestTag==Field.aprilTagSevenLocation||closestTag==Field.aprilTagTwentyOneLocation){
+  if(getHeading().getDegrees()<180&&getHeading().getDegrees()>0){
+    return Rotation2d.fromDegrees(90);
+  }
+  else{
+    return Rotation2d.fromDegrees(270);
+  }
+  }
+ else if(closestTag==Field.aprilTagEightLocation||closestTag==Field.aprilTagTwentyLocation){
+  if(getHeading().getDegrees()<60&&getHeading().getDegrees()>-120){
+    return Rotation2d.fromDegrees(330);
+  }
+  else{
+    return Rotation2d.fromDegrees(150);
+  }
+  }
+  else if(closestTag==Field.aprilTagNineLocation||closestTag==Field.aprilTagNineteenLocation){
+    if(getHeading().getDegrees()<120&&getHeading().getDegrees()>-60){
+      return Rotation2d.fromDegrees(30);
+    }
+    else{
+      return Rotation2d.fromDegrees(210);
+    }
+  }
+  else if(closestTag==Field.aprilTagTenLocation||closestTag==Field.aprilTagEighteenLocation){
+    if(getHeading().getDegrees()<180&&getHeading().getDegrees()>0){
+      return Rotation2d.fromDegrees(90);
+    }
+    else{
+      return Rotation2d.fromDegrees(270);
+    }
+  }
+  else if(closestTag==Field.aprilTagElevenLocation||closestTag==Field.aprilTagSeventeenLocation){
+    if(getHeading().getDegrees()<60&&getHeading().getDegrees()>-120){
+      return Rotation2d.fromDegrees(330);
+    }
+    else{
+      return Rotation2d.fromDegrees(150);
+    }
   }
   else{
     return Rotation2d.fromDegrees(0);

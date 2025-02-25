@@ -57,10 +57,10 @@ public final class Constants
    // public static final int elevatorEncoderID = 1;
     public static final int sensorID = 1;
     public static final double stowPosition = 9.0;
-    public static final double intakePosition = 5.09;
+    public static final double intakePosition = 6.16; //5.09
     public static final double L1Position = 1.5;
-    public static final double L2Position = 6.96;
-    public static final double L3Position = 13.51;
+    public static final double L2Position = 7.53; //6.96
+    public static final double L3Position = 13;
     public static final double L4Position = 21.95;
     public static final double highestPosition = 22.67;
     public static final double kP = 2; //0.25
@@ -80,6 +80,12 @@ public final class Constants
     public static final double VerticalPosition = 0.681;
     public static final double preScoreRight = .018;
     public static final double preScoreLeft = .36;
+  }
+
+  public static class ClimberConstants {
+    public static final int climberMotorID = 1;
+    public static final int climberEncoderID = 1;
+    public static final double climberMotorSpeed = .2;
   }
 
    public static final class Field{

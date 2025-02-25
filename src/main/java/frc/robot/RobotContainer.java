@@ -21,9 +21,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsytem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -40,6 +42,7 @@ public class RobotContainer
                                                                                 "swerve/neo"));
   private final ArmSubsytem armSubsystem = new ArmSubsytem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
   private Command score(double position, double side) {
     return new SequentialCommandGroup(
@@ -152,25 +155,22 @@ public class RobotContainer
   {
       // Register Named Commands
       NamedCommands.registerCommand("L4Height", 
-      Commands.runOnce(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem));
+      Commands.runOnce(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem).withTimeout(2));
 
       NamedCommands.registerCommand("IntakeHeight", 
-      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem));
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(2));
 
       NamedCommands.registerCommand("StowHeight", 
-      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).withTimeout(2));
 
       NamedCommands.registerCommand("PreScoreLeft", 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem));
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem).withTimeout(2));
       
       NamedCommands.registerCommand("PreScoreRight", 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem));
-      
-      //NamedCommands.registerCommand("VerticalPosition", 
-      //Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(.5));
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).withTimeout(2));
 
       NamedCommands.registerCommand("VerticalPosition", 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem));
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(2));
 
 
     // Configure the trigger bindings
@@ -232,13 +232,17 @@ public class RobotContainer
        operatorController.cross().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
        operatorController.button(10).onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L2Position),elevatorSubsystem));
        operatorController.button(9).whileTrue(Commands.run(()->elevatorSubsystem.resetEncoder(), elevatorSubsystem));
+       operatorController.L1().whileTrue(Commands.run(()->climberSubsystem.setMotor(ClimberConstants.climberMotorSpeed),climberSubsystem));
+       operatorController.R1().whileTrue(Commands.run(()->climberSubsystem.setMotor(-ClimberConstants.climberMotorSpeed),climberSubsystem));
+
+
 
        operatorController.povDown().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povLeft().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povRight().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
       driverController.R2().whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
-      driverController.L1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagLeft()));
-      driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagRight()));
+      driverController.L1().whileTrue(Commands.run(()->autoAlignToClosestAprilTag()));
+     // driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagRight()));
       // driverController.L1().onTrue(Commands.runOnce(SignalLogger::start));
        //driverController.L2().onTrue(Commands.runOnce(SignalLogger::stop));
        //driverController.triangle().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -279,6 +283,10 @@ public class RobotContainer
   public void setMotorBrake(boolean brake)
   {
     drivebase.setMotorBrake(brake);
+  }
+  private void autoAlignToClosestAprilTag(){
+    drivebase.driveFieldOriented(drivebase.getTargetSpeeds(-driverController.getLeftY(), -driverController.getLeftX(),
+    drivebase.getClosestAprilTagRotation()));
   }
   private void autoAlignToClosestAprilTagLeft(){
     drivebase.driveFieldOriented(drivebase.getTargetSpeeds(drivebase.getClosestTagXDistance(), drivebase.getClosestTagYDistance(),
