@@ -22,7 +22,7 @@ public class ArmSubsytem extends SubsystemBase{
 public ArmSubsytem() {
     // System.out.println(encoder.get());
     pidController.enableContinuousInput(0, 1);
-   armMotor.setInverted(true);
+   armMotor.setInverted(false);
     
 }
 

@@ -25,7 +25,7 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsytem;
-import frc.robot.subsystems.ClimberSubsystem;
+//import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -42,7 +42,7 @@ public class RobotContainer
                                                                                 "swerve/neo"));
   private final ArmSubsytem armSubsystem = new ArmSubsytem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  //private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
   private Command score(double position, double side) {
     return new SequentialCommandGroup(
@@ -101,6 +101,8 @@ public class RobotContainer
                                                         .deadband(OperatorConstants.DEADBAND)
                                                         .scaleTranslation(1)
                                                         .allianceRelativeControl(true);
+
+                                                        
 
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
@@ -232,8 +234,8 @@ public class RobotContainer
        operatorController.cross().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
        operatorController.button(10).onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L2Position),elevatorSubsystem));
        operatorController.button(9).whileTrue(Commands.run(()->elevatorSubsystem.resetEncoder(), elevatorSubsystem));
-       operatorController.L1().whileTrue(Commands.run(()->climberSubsystem.setMotor(ClimberConstants.climberMotorSpeed),climberSubsystem));
-       operatorController.R1().whileTrue(Commands.run(()->climberSubsystem.setMotor(-ClimberConstants.climberMotorSpeed),climberSubsystem));
+     //  operatorController.L1().whileTrue(Commands.run(()->climberSubsystem.setMotor(ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
+      // operatorController.R1().whileTrue(Commands.run(()->climberSubsystem.setMotor(-ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
 
 
 

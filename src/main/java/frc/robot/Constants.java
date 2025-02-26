@@ -77,15 +77,15 @@ public final class Constants
     public static final double armScoringPosition = 1;
     public static final double leftIntakePosition = 1;
     public static final double rightIntakePosition = 1;
-    public static final double VerticalPosition = 0.681;
-    public static final double preScoreRight = .018;
-    public static final double preScoreLeft = .36;
+    public static final double VerticalPosition = 0.0331;
+    public static final double preScoreRight = .396;
+    public static final double preScoreLeft = .661;
   }
 
   public static class ClimberConstants {
-    public static final int climberMotorID = 1;
-    public static final int climberEncoderID = 1;
-    public static final double climberMotorSpeed = .2;
+    public static final int climberMotorID = 17;
+    public static final int climberEncoderID = 46;
+    public static final double climberMotorSpeed = 1;
   }
 
    public static final class Field{

@@ -69,6 +69,7 @@ public class SwerveSubsystem extends SubsystemBase
    * Swerve drive object.
    */
   private final SwerveDrive         swerveDrive;
+  private final SwerveDrivePoseEstimator m_poseEstimator;
   /**
    * AprilTag field layout.
    */
@@ -82,7 +83,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   private       Vision              vision;
 
-   private SwerveDrivePoseEstimator m_poseEstimator;
+   
      
 
   /**
@@ -128,6 +129,8 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.setModuleEncoderAutoSynchronize(false,
                                                 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
     swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+    m_poseEstimator = new SwerveDrivePoseEstimator(getKinematics(), getHeading(), swerveDrive.getModulePositions(), new Pose2d());
+    
     if (visionDriveTest)
     {
       setupPhotonVision();
@@ -136,13 +139,7 @@ public class SwerveSubsystem extends SubsystemBase
     }
     setupPathPlanner();
 
-    m_poseEstimator = new SwerveDrivePoseEstimator(
-      getKinematics(),
-      getHeading(),
-      swerveDrive.getModulePositions(),
-      new Pose2d(),
-      VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+   
     
   }
 
@@ -159,13 +156,8 @@ public class SwerveSubsystem extends SubsystemBase
                                   Constants.MAX_SPEED,
                                   new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
                                              Rotation2d.fromDegrees(0)));
-     m_poseEstimator = new SwerveDrivePoseEstimator(
-      getKinematics(),
-      getHeading(),
-      swerveDrive.getModulePositions(),
-      new Pose2d(),
-      VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
-      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+    m_poseEstimator = new SwerveDrivePoseEstimator(getKinematics(), getHeading(), swerveDrive.getModulePositions(), new Pose2d());
+    
   }
 
   /**
@@ -173,13 +165,13 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void setupPhotonVision()
   {
-    vision = new Vision(swerveDrive::getPose, swerveDrive.field);
+   // vision = new Vision(swerveDrive::getPose, swerveDrive.field);
   }
 
   @Override
   public void periodic()
   {
-    //updateOdometry();
+    updateOdometry();
     // When vision is enabled we must manually update odometry in SwerveDrive
     if (visionDriveTest)
     {
@@ -611,7 +603,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void resetOdometry(Pose2d initialHolonomicPose)
   {
-    m_poseEstimator.resetPosition(getHeading(),swerveDrive.getModulePositions(),initialHolonomicPose);
+    //m_poseEstimator.resetPosition(getHeading(),swerveDrive.getModulePositions(),initialHolonomicPose);
     swerveDrive.resetOdometry(initialHolonomicPose);
   }
 
@@ -623,6 +615,7 @@ public class SwerveSubsystem extends SubsystemBase
   public Pose2d getPose()
   {
     return m_poseEstimator.getEstimatedPosition();
+    //return swerveDrive.getPose();
   }
 
   /**
@@ -700,7 +693,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Rotation2d getHeading()
   {
-    return getPose().getRotation();
+    return swerveDrive.getOdometryHeading();
   }
 
   /**
@@ -856,7 +849,7 @@ public class SwerveSubsystem extends SubsystemBase
     }
     else if (useMegaTag2 == true)
     {
-      LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.SetRobotOrientation("limelight", getHeading().getDegrees(), 0, 0, 0, 0, 0);
       LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
       if(Math.abs(swerveDrive.getFieldVelocity().omegaRadiansPerSecond) > 50) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
       {
