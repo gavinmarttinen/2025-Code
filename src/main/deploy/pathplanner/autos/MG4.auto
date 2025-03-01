@@ -19,6 +19,12 @@
         {
           "type": "named",
           "data": {
+            "name": "PreScoreLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "VerticalPosition"
           }
         },

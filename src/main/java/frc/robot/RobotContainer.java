@@ -146,6 +146,10 @@ public class RobotContainer
                                                                                                       (Math.PI * 2))
                                                                      .headingWhile(true);
 
+                                                                     SwerveInputStream driveToLeftReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->drivebase.getClosestReefPostLeftXDistance(), ()->drivebase.getClosestReefPostLeftYDistance());
+
+SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->drivebase.getClosestReefPostRightXDistance(), ()->drivebase.getClosestReefPostRightYDistance());
+
   Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDirectAngleSim);
 
   Command driveSetpointGenSim = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleSim);
@@ -166,16 +170,21 @@ public class RobotContainer
       Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).withTimeout(2));
 
       NamedCommands.registerCommand("PreScoreLeft", 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem).withTimeout(2));
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem).withTimeout(1.5));
       
       NamedCommands.registerCommand("PreScoreRight", 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).withTimeout(2));
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).withTimeout(1.5));
 
       NamedCommands.registerCommand("VerticalPosition", 
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(2));
 
+      NamedCommands.registerCommand("driveToRightReefPost", drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()-> 
+      drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceRight()));
+    
+      NamedCommands.registerCommand("driveToLeftReefPost", drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()-> 
+      drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceLeft()));
 
-    // Configure the trigger bindings
+      // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
    autoChooser = AutoBuilder.buildAutoChooser("W1C1");
@@ -242,8 +251,11 @@ public class RobotContainer
        operatorController.povDown().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povLeft().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povRight().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
-      driverController.R2().whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
+     // driverController.R1().whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
       driverController.L1().whileTrue(Commands.run(()->autoAlignToClosestAprilTag()));
+      driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestFeederStation()));
+      driverController.L2().whileTrue(drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
+       driverController.R2().whileTrue(drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
      // driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagRight()));
       // driverController.L1().onTrue(Commands.runOnce(SignalLogger::start));
        //driverController.L2().onTrue(Commands.runOnce(SignalLogger::stop));
@@ -290,13 +302,9 @@ public class RobotContainer
     drivebase.driveFieldOriented(drivebase.getTargetSpeeds(-driverController.getLeftY(), -driverController.getLeftX(),
     drivebase.getClosestAprilTagRotation()));
   }
-  private void autoAlignToClosestAprilTagLeft(){
-    drivebase.driveFieldOriented(drivebase.getTargetSpeeds(drivebase.getClosestTagXDistance(), drivebase.getClosestTagYDistance(),
-    drivebase.getClosestAprilTagRotationLeft()));
-  }
-  private void autoAlignToClosestAprilTagRight(){
-    drivebase.driveFieldOriented(drivebase.getTargetSpeeds(drivebase.getClosestTagXDistance(), drivebase.getClosestTagYDistance(),
-    drivebase.getClosestAprilTagRotationRight()));
-  }
 
+  private void autoAlignToClosestFeederStation(){
+    drivebase.driveFieldOriented(drivebase.getTargetSpeeds(-driverController.getLeftY(), -driverController.getLeftX(),
+    drivebase.getClosestFeederStationRotation()));
+  }
 }

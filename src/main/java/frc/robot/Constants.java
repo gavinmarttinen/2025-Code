@@ -89,6 +89,8 @@ public final class Constants
   }
 
    public static final class Field{
+    public static final Pose2d aprilTagOneLocation = new Pose2d(Units.inchesToMeters(657.37), Units.inchesToMeters(25.80),Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwoLocation = new Pose2d(Units.inchesToMeters(657.37), Units.inchesToMeters(291.20),Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagSixLocation = new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(130.17),Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagSevenLocation = new Pose2d(Units.inchesToMeters(546.87), Units.inchesToMeters(158.50),Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagEightLocation = new Pose2d(Units.inchesToMeters(530.49), Units.inchesToMeters(186.83),Rotation2d.fromDegrees(0));//red side
@@ -106,5 +108,33 @@ public final class Constants
     public static final Pose2d aprilTagTwentyLocation = new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(186.83),Rotation2d.fromDegrees(0));//blue side
     public static final Pose2d aprilTagTwentyOneLocation = new Pose2d(Units.inchesToMeters(209.49), Units.inchesToMeters(158.50),Rotation2d.fromDegrees(0));//blue side
     public static final Pose2d aprilTagTwentyTwoLocation = new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17),Rotation2d.fromDegrees(0));//blue side
+
+    public static final Pose2d aprilTagSixLeftReef = new Pose2d(13.624, 2.731,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagSixRightReef = new Pose2d(13.893, 2.895,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagSevenLeftReef = new Pose2d(14.46,3.818,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagSevenRightReef = new Pose2d(14.46,4.098,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagEightLeftReef = new Pose2d(13.881,5.146,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagEightRightReef = new Pose2d(13.653,5.292,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagNineLeftReef = new Pose2d(12.558,5.319,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagNineRightReef = new Pose2d(12.296,5.147,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTenLeftReef = new Pose2d(11.745,4.176,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTenRightReef = new Pose2d(11.745,3.841,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagElevenLeftReef = new Pose2d(12.268,2.873,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagElevenRightReef = new Pose2d(12.589,2.704,Rotation2d.fromDegrees(0));//red side
+
+    public static final Pose2d aprilTagSeventeenLeftReef = new Pose2d(3.616, 2.858,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagSeventeenRightReef = new Pose2d(3.929, 2.698,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagEighteenLeftReef = new Pose2d(3.072,4.116,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagEighteenRightReef = new Pose2d(3.094,3.888,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagNineteenLeftReef = new Pose2d(3.98,5.353,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagNineteenRightReef = new Pose2d(3.65,5.154,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwentyLeftReef = new Pose2d(5.308,5.188,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwentyRightReef = new Pose2d(5.00,5.352,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwentyOneLeftReef = new Pose2d(5.914,3.862,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwentyOneRightReef = new Pose2d(5.914, 4.146,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwentyTwoLeftReef = new Pose2d(5.071,2.676,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwentyTwoRightReef = new Pose2d(5.312, 2.808,Rotation2d.fromDegrees(0));//red side
+
   }
+  
 }

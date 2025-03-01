@@ -11,9 +11,34 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4Height"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PreScoreRight"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "VerticalPosition"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StowHeight"
           }
         },
         {
@@ -37,7 +62,38 @@
         {
           "type": "named",
           "data": {
-            "name": "StowHeight"
+            "name": "IntakeHeight"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4Height"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PreScoreRight"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VerticalPosition"
           }
         }
       ]
