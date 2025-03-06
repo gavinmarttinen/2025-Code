@@ -7,11 +7,9 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,10 +23,12 @@ import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsytem;
-//import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+
+import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
 
 public class RobotContainer
@@ -42,7 +42,7 @@ public class RobotContainer
                                                                                 "swerve/neo"));
   private final ArmSubsytem armSubsystem = new ArmSubsytem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  //private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
   private Command score(double position, double side) {
     return new SequentialCommandGroup(
@@ -60,7 +60,6 @@ public class RobotContainer
 
   private final Command intakeCoral = new SequentialCommandGroup(
   Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.leftIntakePosition),armSubsystem),
-  Commands.run(()-> elevatorSubsystem.intakeCoral()),
   Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.VerticalPosition)));
 
    private final SendableChooser<Command> autoChooser;
@@ -87,8 +86,8 @@ public class RobotContainer
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverController.getLeftY() * 1,
-                                                                () -> driverController.getLeftX() * 1)
+                                                                () -> driverController.getLeftY() * -1,
+                                                                () -> driverController.getLeftX() * -1)
                                                             .withControllerRotationAxis(()->driverController.getRightX()*-1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(1)
@@ -146,9 +145,9 @@ public class RobotContainer
                                                                                                       (Math.PI * 2))
                                                                      .headingWhile(true);
 
-                                                                     SwerveInputStream driveToLeftReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->drivebase.getClosestReefPostLeftXDistance(), ()->drivebase.getClosestReefPostLeftYDistance());
+SwerveInputStream driveToLeftReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.5*drivebase.getClosestReefPostLeftXDistance(), ()->0.5*drivebase.getClosestReefPostLeftYDistance());
 
-SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->drivebase.getClosestReefPostRightXDistance(), ()->drivebase.getClosestReefPostRightYDistance());
+SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.5*drivebase.getClosestReefPostRightXDistance(), ()->0.5*drivebase.getClosestReefPostRightYDistance());
 
   Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDirectAngleSim);
 
@@ -164,7 +163,7 @@ SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerv
       Commands.runOnce(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem).withTimeout(2));
 
       NamedCommands.registerCommand("IntakeHeight", 
-      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(2));
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(1));
 
       NamedCommands.registerCommand("StowHeight", 
       Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).withTimeout(2));
@@ -176,7 +175,7 @@ SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerv
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).withTimeout(1.5));
 
       NamedCommands.registerCommand("VerticalPosition", 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(2));
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(1.5).andThen(Commands.run(()->armSubsystem.stopMotor(), armSubsystem).withTimeout(0.1)));
 
       NamedCommands.registerCommand("driveToRightReefPost", drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()-> 
       drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceRight()));
@@ -184,11 +183,16 @@ SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerv
       NamedCommands.registerCommand("driveToLeftReefPost", drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()-> 
       drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceLeft()));
 
+      NamedCommands.registerCommand("stopArmMotor", Commands.run(()->armSubsystem.stopMotor(),armSubsystem).withTimeout(0.1));
+
       // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
    autoChooser = AutoBuilder.buildAutoChooser("W1C1");
    SmartDashboard.putData("Auto Chooser", autoChooser);
+   SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+   SmartDashboard.putBoolean("Aligned To Reef", drivebase.isInDistanceToleranceEither());
+   
   }
 
   /**
@@ -212,7 +216,9 @@ SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerv
       SmartDashboard.putNumber("RotLeft", rotLeft);
       SmartDashboard.putNumber("LeftCtrl", leftCtrl);
       SmartDashboard.putNumber("RotRight", rotRight);
-      armSubsystem.setMotor(rotLeft - rotRight);
+      //SmartDashboard.putNumber("Battery Voltage", )
+     
+      armSubsystem.setMotor(rotRight - rotLeft);
     }, armSubsystem));
     // (Condition) ? Return-On-True : Return-on-False
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
@@ -243,8 +249,8 @@ SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerv
        operatorController.cross().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
        operatorController.button(10).onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L2Position),elevatorSubsystem));
        operatorController.button(9).whileTrue(Commands.run(()->elevatorSubsystem.resetEncoder(), elevatorSubsystem));
-     //  operatorController.L1().whileTrue(Commands.run(()->climberSubsystem.setMotor(ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
-      // operatorController.R1().whileTrue(Commands.run(()->climberSubsystem.setMotor(-ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
+       operatorController.L1().whileTrue(Commands.run(()->climberSubsystem.setMotor(ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
+       operatorController.R1().whileTrue(Commands.run(()->climberSubsystem.setMotor(-ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
 
 
 

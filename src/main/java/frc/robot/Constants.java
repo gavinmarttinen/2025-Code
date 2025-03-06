@@ -54,32 +54,39 @@ public final class Constants
   {
     public static final int elevatorMotorID = 14; 
     public static final int elevatorMotor1ID = 15; 
-   // public static final int elevatorEncoderID = 1;
     public static final int sensorID = 1;
-    public static final double stowPosition = 9.0;
-    public static final double intakePosition = 6.16; //5.09
-    public static final double L1Position = 1.5;
-    public static final double L2Position = 7.53; //6.96
+    public static final double stowPosition = 9.5;
+    public static final double intakePosition = 6.16;
+    public static final double L2Position = 7.53;
     public static final double L3Position = 13;
     public static final double L4Position = 21.95;
     public static final double highestPosition = 22.67;
-    public static final double kP = 2; //0.25
+    public static final double kS = 0.04087;
+    public static final double kV = 0.12261;
+    public static final double kA = 0.0033489;
+    public static final double kP = 2;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kG = 0.4;
+    public static final double CruiseVelocity = 80;
+    public static final double Acceleration = 80;
+    public static final double Jerk = 1600;
     public static final int limitSwitchChannel = 0;
   }
 
   public static class ArmConstants {
 
     public static final int armMotorID = 16;
-    public static final int armEncoderID = 1;
+    public static final int armEncoderID = 9;
     public static final double armScoringPosition = 1;
     public static final double leftIntakePosition = 1;
     public static final double rightIntakePosition = 1;
-    public static final double VerticalPosition = 0.0331;
+    public static final double VerticalPosition = 0.04;
     public static final double preScoreRight = .396;
-    public static final double preScoreLeft = .661;
+    public static final double preScoreLeft = .61;
+    public static final double P = 2.0;
+    public static final double I = 0.0;
+    public static final double D = 0;
   }
 
   public static class ClimberConstants {
@@ -124,14 +131,14 @@ public final class Constants
 
     public static final Pose2d aprilTagSeventeenLeftReef = new Pose2d(3.616, 2.858,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagSeventeenRightReef = new Pose2d(3.929, 2.698,Rotation2d.fromDegrees(0));//red side
-    public static final Pose2d aprilTagEighteenLeftReef = new Pose2d(3.072,4.116,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagEighteenLeftReef = new Pose2d(3.196,4.352,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagEighteenRightReef = new Pose2d(3.094,3.888,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagNineteenLeftReef = new Pose2d(3.98,5.353,Rotation2d.fromDegrees(0));//red side
-    public static final Pose2d aprilTagNineteenRightReef = new Pose2d(3.65,5.154,Rotation2d.fromDegrees(0));//red side
-    public static final Pose2d aprilTagTwentyLeftReef = new Pose2d(5.308,5.188,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagNineteenRightReef = new Pose2d(3.8259,5.1347,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwentyLeftReef = new Pose2d(5.4368,4.984,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagTwentyRightReef = new Pose2d(5.00,5.352,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagTwentyOneLeftReef = new Pose2d(5.914,3.862,Rotation2d.fromDegrees(0));//red side
-    public static final Pose2d aprilTagTwentyOneRightReef = new Pose2d(5.914, 4.146,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwentyOneRightReef = new Pose2d(5.872, 4.092,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagTwentyTwoLeftReef = new Pose2d(5.071,2.676,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagTwentyTwoRightReef = new Pose2d(5.312, 2.808,Rotation2d.fromDegrees(0));//red side
 

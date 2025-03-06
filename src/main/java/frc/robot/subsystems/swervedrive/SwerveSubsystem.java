@@ -24,17 +24,16 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -71,6 +70,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   private final SwerveDrive         swerveDrive;
   private final SwerveDrivePoseEstimator m_poseEstimator;
+  Field2d m_field;
   /**
    * AprilTag field layout.
    */
@@ -123,7 +123,7 @@ public class SwerveSubsystem extends SubsystemBase
       throw new RuntimeException(e);
     }
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
-    swerveDrive.setCosineCompensator(false);//!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+    swerveDrive.setCosineCompensator(true);//!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
     swerveDrive.setAngularVelocityCompensation(true,
                                                true,
                                                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
@@ -139,7 +139,8 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.stopOdometryThread();
     }
     setupPathPlanner();
-
+    m_field = new Field2d();
+    
    
     
   }
@@ -158,7 +159,7 @@ public class SwerveSubsystem extends SubsystemBase
                                   new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
                                              Rotation2d.fromDegrees(0)));
     m_poseEstimator = new SwerveDrivePoseEstimator(getKinematics(), getHeading(), swerveDrive.getModulePositions(), new Pose2d());
-    
+    m_field = new Field2d();
   }
 
   /**
@@ -172,6 +173,9 @@ public class SwerveSubsystem extends SubsystemBase
   @Override
   public void periodic()
   {
+    // Do this in either robot or subsystem init
+    SmartDashboard.putData("FieldWithVision", m_field);
+    m_field.setRobotPose(getPose());
     updateOdometry();
     // When vision is enabled we must manually update odometry in SwerveDrive
     if (visionDriveTest)
@@ -257,57 +261,6 @@ public class SwerveSubsystem extends SubsystemBase
     PathfindingCommand.warmupCommand().schedule();
   }
 
-  /**
-   * Get the distance to the speaker.
-   *
-   * @return Distance to speaker in meters.
-   */
-  public double getDistanceToSpeaker()
-  {
-    int allianceAprilTag = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 4;
-    // Taken from PhotonUtils.getDistanceToPose
-    Pose3d speakerAprilTagPose = aprilTagFieldLayout.getTagPose(allianceAprilTag).get();
-    return getPose().getTranslation().getDistance(speakerAprilTagPose.toPose2d().getTranslation());
-  }
-
-  /**
-   * Get the yaw to aim at the speaker.
-   *
-   * @return {@link Rotation2d} of which you need to achieve.
-   */
-  public Rotation2d getSpeakerYaw()
-  {
-    int allianceAprilTag = DriverStation.getAlliance().get() == Alliance.Blue ? 7 : 4;
-    // Taken from PhotonUtils.getYawToPose()
-    Pose3d        speakerAprilTagPose = aprilTagFieldLayout.getTagPose(allianceAprilTag).get();
-    Translation2d relativeTrl         = speakerAprilTagPose.toPose2d().relativeTo(getPose()).getTranslation();
-    return new Rotation2d(relativeTrl.getX(), relativeTrl.getY()).plus(swerveDrive.getOdometryHeading());
-  }
-
-  /**
-   * Aim the robot at the speaker.
-   *
-   * @param tolerance Tolerance in degrees.
-   * @return Command to turn the robot to the speaker.
-   */
-  public Command aimAtSpeaker(double tolerance)
-  {
-    SwerveController controller = swerveDrive.getSwerveController();
-    return run(
-        () -> {
-          ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0,
-                                                   controller.headingCalculate(getHeading().getRadians(),
-                                                                               getSpeakerYaw().getRadians()),
-                                                                       getHeading());
-          drive(speeds);
-        }).until(() -> Math.abs(getSpeakerYaw().minus(getHeading()).getDegrees()) < tolerance);
-  }
-
-  /**
-   * Aim the robot at the target returned by PhotonVision.
-   *
-   * @return A {@link Command} which will run the alignment.
-   */
   public Command aimAtTarget(Cameras camera)
   {
 
@@ -820,6 +773,7 @@ public class SwerveSubsystem extends SubsystemBase
 
     boolean useMegaTag2 = true; //set to false to use MegaTag1
     boolean doRejectUpdate = false;
+    boolean doRejectUpdatemt3g = false;
     if(useMegaTag2 == false)
     {
       LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
@@ -851,15 +805,25 @@ public class SwerveSubsystem extends SubsystemBase
     else if (useMegaTag2 == true)
     {
       LimelightHelpers.SetRobotOrientation("limelight", getHeading().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.SetRobotOrientation("limelight-three", getHeading().getDegrees(), 0, 0, 0, 0, 0);
       LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      LimelightHelpers.PoseEstimate mt23g = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-three");
       if(Math.abs(swerveDrive.getFieldVelocity().omegaRadiansPerSecond) > 50) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
       {
         doRejectUpdate = true;
+        doRejectUpdatemt3g = true;
       }
+      if(mt2 != null){
       if(mt2.tagCount == 0)
       {
         doRejectUpdate = true;
       }
+      if(mt23g.tagCount == 0)
+      {
+        doRejectUpdatemt3g = true;
+      }
+    }
+    if(mt2 != null){
       if(!doRejectUpdate)
       {
         m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
@@ -867,6 +831,16 @@ public class SwerveSubsystem extends SubsystemBase
             mt2.pose,
             mt2.timestampSeconds);
       }
+    }
+
+    if(mt23g != null){
+      if(!doRejectUpdatemt3g){
+        m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        m_poseEstimator.addVisionMeasurement(
+              mt23g.pose,
+              mt23g.timestampSeconds);
+      }
+    }
     }
   }
 
@@ -1015,6 +989,7 @@ public double getClosestTagYDistance(){
  }
  public double getClosestAprilTagRotationPID(){
   PIDController pidController = new PIDController(0.008, 0, 0);
+  pidController.enableContinuousInput(-180, 180);
   Pose2d closestTag = getPose().nearest(List.of(Field.aprilTagSixLocation,Field.aprilTagSevenLocation,Field.aprilTagEightLocation,Field.aprilTagNineLocation,Field.aprilTagTenLocation,Field.aprilTagElevenLocation,Field.aprilTagSeventeenLocation,Field.aprilTagEighteenLocation,Field.aprilTagNineteenLocation,Field.aprilTagTwentyLocation,Field.aprilTagTwentyOneLocation,Field.aprilTagTwentyTwoLocation));
   if(closestTag==Field.aprilTagSixLocation||closestTag==Field.aprilTagTwentyTwoLocation){
     
@@ -1107,6 +1082,15 @@ public boolean isInDistanceToleranceRight(){
 public boolean isInDistanceToleranceLeft(){
   if(Math.abs(getClosestReefPostLeftXDistance())<0.01&&Math.abs(getClosestReefPostLeftYDistance())<.01){
   return true;
+  }
+  else{
+    return false;
+  }
+}
+
+public boolean isInDistanceToleranceEither(){
+  if(isInDistanceToleranceLeft()||isInDistanceToleranceRight()){
+    return true;
   }
   else{
     return false;

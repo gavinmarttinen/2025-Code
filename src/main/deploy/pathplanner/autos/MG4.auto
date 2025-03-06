@@ -5,21 +5,28 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "MG4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L4Height"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PreScoreLeft"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "driveToRightReefPost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4Height"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PreScoreLeft"
+                }
+              }
+            ]
           }
         },
         {
@@ -37,7 +44,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }
