@@ -149,7 +149,11 @@ SwerveInputStream driveToLeftReefPost = SwerveInputStream.of(drivebase.getSwerve
 
 SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.5*drivebase.getClosestReefPostRightXDistance(), ()->0.5*drivebase.getClosestReefPostRightYDistance());
 
-  Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDirectAngleSim);
+SwerveInputStream autoTurnToReef = driveAngularVelocity.copy().withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPIDAutoTurn());
+
+SwerveInputStream autoTurnToFeederStation = driveAngularVelocity.copy().withControllerRotationAxis(()->drivebase.getClosestFeederStationRotationPID());
+  
+Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDirectAngleSim);
 
   Command driveSetpointGenSim = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleSim);
 
@@ -208,6 +212,11 @@ SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerv
       elevatorSubsystem.setMotor(MathUtil.applyDeadband(-operatorController.getLeftY(),0.05));
     }, elevatorSubsystem));
 
+    climberSubsystem.setDefaultCommand(Commands.run(()->{
+      
+      climberSubsystem.setMotor(0);
+    }, climberSubsystem));
+    
     armSubsystem.setDefaultCommand(Commands.run(()->{
       var leftCtrl = Math.min(MathUtil.applyDeadband(operatorController.getRawAxis(4),0.01), 0.0);
       var rotLeft = .4*Math.pow(leftCtrl, 2);
@@ -251,17 +260,17 @@ SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerv
        operatorController.button(9).whileTrue(Commands.run(()->elevatorSubsystem.resetEncoder(), elevatorSubsystem));
        operatorController.L1().whileTrue(Commands.run(()->climberSubsystem.setMotor(ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
        operatorController.R1().whileTrue(Commands.run(()->climberSubsystem.setMotor(-ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
-
-
-
+       //operatorController.L1().onTrue(Commands.run(()->climberSubsystem.setMotorPosition(ClimberConstants.climberOutPosition), climberSubsystem)).onFalse(climberSubsystem.getDefaultCommand());
+       //operatorController.R1().onTrue(Commands.run(()->climberSubsystem.setMotorPosition(ClimberConstants.climberInPosition), climberSubsystem)).onFalse(climberSubsystem.getDefaultCommand());
        operatorController.povDown().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povLeft().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povRight().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
+
      // driverController.R1().whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
-      driverController.L1().whileTrue(Commands.run(()->autoAlignToClosestAprilTag()));
-      driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestFeederStation()));
+      driverController.R1().whileTrue(drivebase.driveFieldOriented(autoTurnToReef));
+      driverController.L1().whileTrue(drivebase.driveFieldOriented(autoTurnToFeederStation));
       driverController.L2().whileTrue(drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
-       driverController.R2().whileTrue(drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
+      driverController.R2().whileTrue(drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
      // driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagRight()));
       // driverController.L1().onTrue(Commands.runOnce(SignalLogger::start));
        //driverController.L2().onTrue(Commands.runOnce(SignalLogger::stop));
@@ -281,7 +290,6 @@ SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerv
     //   driverController.rightBumper().onTrue(Commands.none());
     
      }
-
   }
 
   /**
