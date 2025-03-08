@@ -15,12 +15,13 @@ public class ClimberSubsystem extends SubsystemBase{
 public ClimberSubsystem() {
     
    climberMotor.setInverted(false);
+
     
 }
 
 @Override
  public void periodic() {
-    System.out.println("Climb Encoder"+encoder.get());
+    //System.out.println("Climb Encoder"+encoder.get());
  }
 
  public void setMotorPosition(double setpoint) {

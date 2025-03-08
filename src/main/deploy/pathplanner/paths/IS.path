@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.444488636363636,
-        "y": 4.9972301136363635
+        "x": 5.346030405405405,
+        "y": 5.418327702702702
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.065568181818182,
-        "y": 6.17387784090909
+        "x": 5.346030405405405,
+        "y": 6.880827702702702
       },
       "isLocked": false,
       "linkedName": "I"
     },
     {
       "anchor": {
-        "x": 1.1067567567567567,
-        "y": 7.3452702702702695
+        "x": 1.264864864864865,
+        "y": 7.088344594594593
       },
       "prevControl": {
-        "x": 2.3232908476658425,
-        "y": 6.627315724815724
+        "x": 2.481398955773951,
+        "y": 6.370390049140048
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,14 +33,20 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "StowHeight",
-      "waypointRelativePos": 0,
+      "name": "StowHeight Trigger",
+      "waypointRelativePos": 0.14563862928348842,
+      "endWaypointRelativePos": 0.8964174454828729,
+      "command": null
+    },
+    {
+      "name": "StowHeight Trigger",
+      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.5,
+    "maxVelocity": 2.5,
     "maxAcceleration": 1.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 360.0,

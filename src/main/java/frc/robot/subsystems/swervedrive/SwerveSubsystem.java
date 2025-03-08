@@ -767,6 +767,9 @@ public class SwerveSubsystem extends SubsystemBase
     return swerveDrive;
   }
   public void updateOdometry() {
+    int[] validIDs = {6,7,8,9,10,11,17,18,19,20,21,22};
+LimelightHelpers.SetFiducialIDFiltersOverride("limelight", validIDs);
+LimelightHelpers.SetFiducialIDFiltersOverride("limelight-three", validIDs);
     m_poseEstimator.update(
         getHeading(),
         swerveDrive.getModulePositions());
@@ -814,15 +817,18 @@ public class SwerveSubsystem extends SubsystemBase
         doRejectUpdatemt3g = true;
       }
       if(mt2 != null){
-      if(mt2.tagCount == 0)
+      if(mt2.tagCount == 0 || mt2.avgTagDist>3)
       {
         doRejectUpdate = true;
       }
-      if(mt23g.tagCount == 0)
+    }
+    if(mt23g != null){
+      if(mt23g.tagCount == 0 || mt23g.avgTagDist>3)
       {
         doRejectUpdatemt3g = true;
       }
     }
+  
     if(mt2 != null){
       if(!doRejectUpdate)
       {
@@ -1155,7 +1161,7 @@ public double getClosestReefPostRightYDistance(){
 }
 
 public boolean isInDistanceToleranceRight(){
-  if(Math.abs(getClosestReefPostRightXDistance())<0.01&&Math.abs(getClosestReefPostRightYDistance())<.01){
+  if(Math.abs(getClosestReefPostRightXDistance())<0.03&&Math.abs(getClosestReefPostRightYDistance())<.03){
   return true;
   }
   else{
@@ -1164,7 +1170,7 @@ public boolean isInDistanceToleranceRight(){
 }
 
 public boolean isInDistanceToleranceLeft(){
-  if(Math.abs(getClosestReefPostLeftXDistance())<0.01&&Math.abs(getClosestReefPostLeftYDistance())<.01){
+  if(Math.abs(getClosestReefPostLeftXDistance())<0.03&&Math.abs(getClosestReefPostLeftYDistance())<.03){
   return true;
   }
   else{

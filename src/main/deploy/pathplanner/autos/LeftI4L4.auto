@@ -5,28 +5,28 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "RF4"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "L4Height"
+                  "pathName": "LeftI4"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PreScoreRight"
+                  "name": "PreScoreLeft"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveToLeftReefPost"
           }
         },
         {
@@ -36,39 +36,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "StowHeight"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "FS"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SC4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "VerticalPosition"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeHeight"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
+            "pathName": "IS"
           }
         },
         {
@@ -76,18 +46,37 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "L4Height"
+                  "pathName": "SL4"
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "PreScoreRight"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.85
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "PreScoreLeftShort"
+                      }
+                    }
+                  ]
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveToRightReefPost"
           }
         },
         {
@@ -99,7 +88,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

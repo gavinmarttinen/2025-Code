@@ -6,6 +6,11 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.events.EventTrigger;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.FileVersionException;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -27,6 +32,9 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
+import java.io.IOException;
+
+import org.json.simple.parser.ParseException;
 
 import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
@@ -145,13 +153,25 @@ public class RobotContainer
                                                                                                       (Math.PI * 2))
                                                                      .headingWhile(true);
 
-SwerveInputStream driveToLeftReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.5*drivebase.getClosestReefPostLeftXDistance(), ()->0.5*drivebase.getClosestReefPostLeftYDistance());
+SwerveInputStream driveToLeftReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.3*drivebase.getClosestReefPostLeftXDistance(), ()->0.3*drivebase.getClosestReefPostLeftYDistance());
 
-SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.5*drivebase.getClosestReefPostRightXDistance(), ()->0.5*drivebase.getClosestReefPostRightYDistance());
+SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.3*drivebase.getClosestReefPostRightXDistance(), ()->0.3*drivebase.getClosestReefPostRightYDistance());
 
-SwerveInputStream autoTurnToReef = driveAngularVelocity.copy().withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPIDAutoTurn());
+SwerveInputStream autoTurnToReef = SwerveInputStream.of(drivebase.getSwerveDrive(),
+() -> driverController.getLeftY() * -1,
+() -> driverController.getLeftX() * -1)
+.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())
+.deadband(OperatorConstants.DEADBAND)
+.scaleTranslation(1)
+.allianceRelativeControl(true);
 
-SwerveInputStream autoTurnToFeederStation = driveAngularVelocity.copy().withControllerRotationAxis(()->drivebase.getClosestFeederStationRotationPID());
+SwerveInputStream autoTurnToFeederStation = SwerveInputStream.of(drivebase.getSwerveDrive(),
+() -> driverController.getLeftY() * -1,
+() -> driverController.getLeftX() * -1)
+.withControllerRotationAxis(()->drivebase.getClosestFeederStationRotationPID())
+.deadband(OperatorConstants.DEADBAND)
+.scaleTranslation(1)
+.allianceRelativeControl(true);
   
 Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDirectAngleSim);
 
@@ -167,7 +187,7 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       Commands.runOnce(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem).withTimeout(2));
 
       NamedCommands.registerCommand("IntakeHeight", 
-      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(1));
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(0.8));
 
       NamedCommands.registerCommand("StowHeight", 
       Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).withTimeout(2));
@@ -175,11 +195,14 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       NamedCommands.registerCommand("PreScoreLeft", 
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem).withTimeout(1.5));
       
+      NamedCommands.registerCommand("PreScoreLeftShort", 
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem).withTimeout(1));
+
       NamedCommands.registerCommand("PreScoreRight", 
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).withTimeout(1.5));
 
       NamedCommands.registerCommand("VerticalPosition", 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(1.5).andThen(Commands.run(()->armSubsystem.stopMotor(), armSubsystem).withTimeout(0.1)));
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(1.4).andThen(Commands.run(()->armSubsystem.stopMotor(), armSubsystem).withTimeout(0.1)));
 
       NamedCommands.registerCommand("driveToRightReefPost", drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()-> 
       drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceRight()));
@@ -189,10 +212,46 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
 
       NamedCommands.registerCommand("stopArmMotor", Commands.run(()->armSubsystem.stopMotor(),armSubsystem).withTimeout(0.1));
 
+      NamedCommands.registerCommand("Named Command Print Statement", Commands.print("Named Command Running").withTimeout(3));
+
+      new EventTrigger("Event Trigger Print Statement").whileTrue(Commands.print("Event Trigger Running").withTimeout(3));
+
+      new EventTrigger("L4Height Trigger").onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position), elevatorSubsystem).withTimeout(4)); 
+
+      new EventTrigger("IntakeHeight Trigger").onTrue(
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(0.8));
+
+      new EventTrigger("StowHeight Trigger").onTrue(
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).withTimeout(4));
+
+      new EventTrigger("PreScoreLeft Trigger").onTrue( 
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem).withTimeout(1.5));
+      
+      new EventTrigger("PreScoreRight Trigger").onTrue(
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).withTimeout(1.5));
+
+      new EventTrigger("VerticalPosition Trigger").onTrue( 
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(1.5).andThen(Commands.run(()->armSubsystem.stopMotor(), armSubsystem).withTimeout(0.1)));
+
+      new EventTrigger("driveToLeftReefPost Trigger").onTrue(drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()-> 
+      drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceLeft()));
       // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
+    
    autoChooser = AutoBuilder.buildAutoChooser("W1C1");
+   
+      
+     try {
+      PathPlannerPath RightF4 = PathPlannerPath.fromPathFile("LeftI4").mirrorPath();
+      PathPlannerPath FS = PathPlannerPath.fromPathFile("IS").mirrorPath();
+      PathPlannerPath SC4 = PathPlannerPath.fromPathFile("SL4").mirrorPath();
+     } catch (FileVersionException | IOException | ParseException e) {
+       // TODO Auto-generated catch block
+          e.printStackTrace();
+    }
+    
+  
    SmartDashboard.putData("Auto Chooser", autoChooser);
    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
    SmartDashboard.putBoolean("Aligned To Reef", drivebase.isInDistanceToleranceEither());
