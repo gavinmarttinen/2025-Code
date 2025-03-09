@@ -201,6 +201,9 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       NamedCommands.registerCommand("PreScoreRight", 
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).withTimeout(1.5));
 
+      NamedCommands.registerCommand("PreScoreRightShort", 
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).withTimeout(1));
+
       NamedCommands.registerCommand("VerticalPosition", 
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(1.4).andThen(Commands.run(()->armSubsystem.stopMotor(), armSubsystem).withTimeout(0.1)));
 
@@ -317,10 +320,10 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
        operatorController.cross().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
        operatorController.button(10).onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L2Position),elevatorSubsystem));
        operatorController.button(9).whileTrue(Commands.run(()->elevatorSubsystem.resetEncoder(), elevatorSubsystem));
-       operatorController.L1().whileTrue(Commands.run(()->climberSubsystem.setMotor(ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
-       operatorController.R1().whileTrue(Commands.run(()->climberSubsystem.setMotor(-ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
-       //operatorController.L1().onTrue(Commands.run(()->climberSubsystem.setMotorPosition(ClimberConstants.climberOutPosition), climberSubsystem)).onFalse(climberSubsystem.getDefaultCommand());
-       //operatorController.R1().onTrue(Commands.run(()->climberSubsystem.setMotorPosition(ClimberConstants.climberInPosition), climberSubsystem)).onFalse(climberSubsystem.getDefaultCommand());
+       operatorController.button(13).whileTrue(Commands.run(()->climberSubsystem.setMotor(ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
+       operatorController.button(14).whileTrue(Commands.run(()->climberSubsystem.setMotor(-ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
+       operatorController.L1().onTrue(Commands.run(()->climberSubsystem.setMotorPosition(ClimberConstants.climberOutPosition), climberSubsystem)).onFalse(climberSubsystem.getDefaultCommand());
+       operatorController.R1().onTrue(Commands.run(()->climberSubsystem.setMotorPosition(ClimberConstants.climberInPosition), climberSubsystem)).onFalse(climberSubsystem.getDefaultCommand());
        operatorController.povDown().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povLeft().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
        operatorController.povRight().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());

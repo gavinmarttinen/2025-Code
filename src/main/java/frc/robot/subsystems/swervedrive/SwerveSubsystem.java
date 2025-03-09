@@ -983,8 +983,9 @@ else{
 
 public double getClosestFeederStationRotationPID(){
   Pose2d closestFeederStationTag = getPose().nearest(List.of(Field.aprilTagOneLocation,Field.aprilTagTwoLocation,Field.aprilTagTwelveLocation,Field.aprilTagThirteenLocation));
- PIDController pidController = new PIDController(0.015, 0, 0);
+ PIDController pidController = new PIDController(0.01, 0.1, 0.00);
  pidController.enableContinuousInput(-180, 180);
+ pidController.setTolerance(0);
 if(closestFeederStationTag == Field.aprilTagOneLocation){
   return pidController.calculate(getHeading().getDegrees(),-60);
 }
@@ -1078,7 +1079,7 @@ public double getClosestTagYDistance(){
 }
 
 public double getClosestAprilTagRotationPIDAutoTurn(){
-  PIDController pidController = new PIDController(0.015, 0, 0);
+  PIDController pidController = new PIDController(0.008 , 0, 0.1);
   pidController.enableContinuousInput(-180, 180);
   Pose2d closestTag = getPose().nearest(List.of(Field.aprilTagSixLocation,Field.aprilTagSevenLocation,Field.aprilTagEightLocation,Field.aprilTagNineLocation,Field.aprilTagTenLocation,Field.aprilTagElevenLocation,Field.aprilTagSeventeenLocation,Field.aprilTagEighteenLocation,Field.aprilTagNineteenLocation,Field.aprilTagTwentyLocation,Field.aprilTagTwentyOneLocation,Field.aprilTagTwentyTwoLocation));
   if(closestTag==Field.aprilTagSixLocation||closestTag==Field.aprilTagTwentyTwoLocation){

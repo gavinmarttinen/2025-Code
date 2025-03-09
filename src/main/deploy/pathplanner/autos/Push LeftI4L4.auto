@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Push Left"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [

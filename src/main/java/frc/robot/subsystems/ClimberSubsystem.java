@@ -21,7 +21,7 @@ public ClimberSubsystem() {
 
 @Override
  public void periodic() {
-    //System.out.println("Climb Encoder"+encoder.get());
+    System.out.println("Climb Encoder"+encoder.get());
  }
 
  public void setMotorPosition(double setpoint) {

@@ -11,13 +11,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LeftI4"
+                  "pathName": "RightF4"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "PreScoreLeft"
+                  "name": "PreScoreRight"
                 }
               }
             ]
@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "driveToLeftReefPost"
+            "name": "driveToRightReefPost"
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ISource"
+            "pathName": "FSource"
           }
         },
         {
@@ -48,7 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SourceL4"
+                  "pathName": "SourceC4"
                 }
               },
               {
@@ -58,13 +58,13 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.85
+                        "waitTime": 1.9
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "PreScoreLeftShort"
+                        "name": "PreScoreRight"
                       }
                     }
                   ]
@@ -76,7 +76,7 @@
         {
           "type": "named",
           "data": {
-            "name": "driveToRightReefPost"
+            "name": "driveToLeftReefPost"
           }
         },
         {
