@@ -243,16 +243,6 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
     DriverStation.silenceJoystickConnectionWarning(true);
     
    autoChooser = AutoBuilder.buildAutoChooser("W1C1");
-   
-      
-     try {
-      PathPlannerPath RightF4 = PathPlannerPath.fromPathFile("LeftI4").mirrorPath();
-      PathPlannerPath FS = PathPlannerPath.fromPathFile("IS").mirrorPath();
-      PathPlannerPath SC4 = PathPlannerPath.fromPathFile("SL4").mirrorPath();
-     } catch (FileVersionException | IOException | ParseException e) {
-       // TODO Auto-generated catch block
-          e.printStackTrace();
-    }
     
   
    SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -329,8 +319,10 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
        operatorController.povRight().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
 
      // driverController.R1().whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
-      driverController.R1().whileTrue(drivebase.driveFieldOriented(autoTurnToReef));
-      driverController.L1().whileTrue(drivebase.driveFieldOriented(autoTurnToFeederStation));
+      //driverController.R1().whileTrue(drivebase.driveFieldOriented(autoTurnToReef));
+     // driverController.L1().whileTrue(drivebase.driveFieldOriented(autoTurnToFeederStation));
+     driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTag(),drivebase));
+     driverController.L1().whileTrue(Commands.run(()->autoAlignToClosestFeederStation(),drivebase));
       driverController.L2().whileTrue(drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
       driverController.R2().whileTrue(drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
      // driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagRight()));
@@ -375,12 +367,25 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
     drivebase.setMotorBrake(brake);
   }
   private void autoAlignToClosestAprilTag(){
+    System.out.println(drivebase.isRedAlliance());
+    if(drivebase.isRedAlliance()){
+      drivebase.driveFieldOriented(drivebase.getTargetSpeeds(driverController.getLeftY(), driverController.getLeftX(),
+    drivebase.getClosestAprilTagRotation()));
+    }
+    else{
     drivebase.driveFieldOriented(drivebase.getTargetSpeeds(-driverController.getLeftY(), -driverController.getLeftX(),
     drivebase.getClosestAprilTagRotation()));
+    }
   }
 
   private void autoAlignToClosestFeederStation(){
+    if(drivebase.isRedAlliance()){
+      drivebase.driveFieldOriented(drivebase.getTargetSpeeds(driverController.getLeftY(), driverController.getLeftX(),
+    drivebase.getClosestFeederStationRotation()));
+    }
+    else{
     drivebase.driveFieldOriented(drivebase.getTargetSpeeds(-driverController.getLeftY(), -driverController.getLeftX(),
     drivebase.getClosestFeederStationRotation()));
-  }
+    }
+}
 }
