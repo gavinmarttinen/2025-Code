@@ -4,6 +4,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
@@ -21,7 +22,8 @@ public ClimberSubsystem() {
 
 @Override
  public void periodic() {
-    System.out.println("Climb Encoder"+encoder.get());
+    //System.out.println("Climb Encoder"+encoder.get());
+    SmartDashboard.putNumber("Climb Encoder", encoder.get());
  }
 
  public void setMotorPosition(double setpoint) {

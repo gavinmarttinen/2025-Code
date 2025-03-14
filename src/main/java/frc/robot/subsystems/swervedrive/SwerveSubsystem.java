@@ -1162,7 +1162,7 @@ public double getClosestReefPostRightYDistance(){
 }
 
 public boolean isInDistanceToleranceRight(){
-  if(Math.abs(getClosestReefPostRightXDistance())<0.03&&Math.abs(getClosestReefPostRightYDistance())<.03){
+  if(Math.abs(getClosestReefPostRightXDistance())<0.02&&Math.abs(getClosestReefPostRightYDistance())<.02){
   return true;
   }
   else{
@@ -1171,7 +1171,7 @@ public boolean isInDistanceToleranceRight(){
 }
 
 public boolean isInDistanceToleranceLeft(){
-  if(Math.abs(getClosestReefPostLeftXDistance())<0.03&&Math.abs(getClosestReefPostLeftYDistance())<.03){
+  if(Math.abs(getClosestReefPostLeftXDistance())<0.02&&Math.abs(getClosestReefPostLeftYDistance())<.02){
   return true;
   }
   else{

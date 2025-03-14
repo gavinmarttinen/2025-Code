@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.1346283783783795,
-        "y": 4.1
+        "x": 5.998226351351351,
+        "y": 4.202871621621622
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.992337219423986,
-        "y": 4.1071668372629455
+        "x": 6.936993243243243,
+        "y": 6.3274493243243235
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.8,
-        "y": 4.1
+        "x": 1.264864864864865,
+        "y": 7.088344594594593
       },
       "prevControl": {
-        "x": 6.684021854193503,
-        "y": 4.093767290751565
+        "x": 2.5989020270270267,
+        "y": 6.110050675675674
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BS"
     }
   ],
   "rotationTargets": [],
@@ -33,15 +33,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "L4Height",
-      "waypointRelativePos": 0.04906542056074739,
-      "endWaypointRelativePos": 1.0,
+      "name": "StowHeight Trigger",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
       "command": null
     },
     {
-      "name": "PreScoreLeft",
-      "waypointRelativePos": 0.06308411214952975,
-      "endWaypointRelativePos": 1.0,
+      "name": "StowHeight Trigger",
+      "waypointRelativePos": 0.9353582554517094,
+      "endWaypointRelativePos": null,
       "command": null
     }
   ],
@@ -55,7 +55,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 126.09828396710806
   },
   "reversed": false,
   "folder": null,

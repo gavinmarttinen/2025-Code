@@ -40,6 +40,12 @@
           "data": {
             "name": "StowHeight"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "H4 Left Source"
+          }
         }
       ]
     }
