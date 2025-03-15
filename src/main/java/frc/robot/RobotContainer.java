@@ -153,9 +153,9 @@ public class RobotContainer
                                                                                                       (Math.PI * 2))
                                                                      .headingWhile(true);
 
-SwerveInputStream driveToLeftReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.3*drivebase.getClosestReefPostLeftXDistance(), ()->0.3*drivebase.getClosestReefPostLeftYDistance());
+SwerveInputStream driveToLeftReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.5*drivebase.getClosestReefPostLeftXDistance(), ()->0.5*drivebase.getClosestReefPostLeftYDistance());
 
-SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.3*drivebase.getClosestReefPostRightXDistance(), ()->0.3*drivebase.getClosestReefPostRightYDistance());
+SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.5*drivebase.getClosestReefPostRightXDistance(), ()->0.5*drivebase.getClosestReefPostRightYDistance());
 
 SwerveInputStream autoTurnToReef = SwerveInputStream.of(drivebase.getSwerveDrive(),
 () -> driverController.getLeftY() * -1,

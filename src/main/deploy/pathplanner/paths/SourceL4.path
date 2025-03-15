@@ -34,13 +34,13 @@
   "eventMarkers": [
     {
       "name": "IntakeHeight Trigger",
-      "waypointRelativePos": 0.4852024922118261,
+      "waypointRelativePos": 0.43869516310461415,
       "endWaypointRelativePos": null,
       "command": null
     },
     {
       "name": "L4Height Trigger",
-      "waypointRelativePos": 0.5989096573208745,
+      "waypointRelativePos": 0.7401574803149668,
       "endWaypointRelativePos": null,
       "command": null
     }

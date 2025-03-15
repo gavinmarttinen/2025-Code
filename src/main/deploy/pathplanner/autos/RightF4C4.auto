@@ -24,9 +24,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "driveToRightReefPost"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "driveToRightReefPost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PreScoreRight"
+                }
+              }
+            ]
           }
         },
         {

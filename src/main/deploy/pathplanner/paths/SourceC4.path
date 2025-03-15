@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.5574324324324325,
-        "y": 2.710726351351351
+        "x": 3.517905405405405,
+        "y": 2.7700168918918915
       },
       "prevControl": {
-        "x": 2.7112555693034186,
-        "y": 1.8744565151880939
+        "x": 2.6717285422763912,
+        "y": 1.9337470557286345
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,13 +34,13 @@
   "eventMarkers": [
     {
       "name": "IntakeHeight Trigger",
-      "waypointRelativePos": 0.4540420819490568,
+      "waypointRelativePos": 0.3654485049833887,
       "endWaypointRelativePos": null,
       "command": null
     },
     {
       "name": "L4Height Trigger",
-      "waypointRelativePos": 0.6489479512735319,
+      "waypointRelativePos": 0.710963455149509,
       "endWaypointRelativePos": null,
       "command": null
     }

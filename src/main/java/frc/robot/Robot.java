@@ -55,7 +55,7 @@ public class Robot extends TimedRobot
     {
       DriverStation.silenceJoystickConnectionWarning(true);
     }
-    FollowPathCommand.warmupCommand().schedule();
+    //FollowPathCommand.warmupCommand().schedule();
   }
 
   /**
