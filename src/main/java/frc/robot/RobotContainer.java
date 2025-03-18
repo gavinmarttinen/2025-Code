@@ -186,6 +186,9 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       NamedCommands.registerCommand("L4Height", 
       Commands.runOnce(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem).withTimeout(2));
 
+      NamedCommands.registerCommand("L3Height", 
+      Commands.runOnce(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L3Position),elevatorSubsystem).withTimeout(2));
+
       NamedCommands.registerCommand("IntakeHeight", 
       Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(0.8));
 
@@ -207,6 +210,9 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       NamedCommands.registerCommand("VerticalPosition", 
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(1.4).andThen(Commands.run(()->armSubsystem.stopMotor(), armSubsystem).withTimeout(0.1)));
 
+      NamedCommands.registerCommand("descorePosition", 
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.descorePosition),armSubsystem).withTimeout(1.5));
+      
       NamedCommands.registerCommand("driveToRightReefPost", drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()-> 
       drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceRight()));
     
