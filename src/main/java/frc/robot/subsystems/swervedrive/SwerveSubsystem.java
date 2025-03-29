@@ -1138,25 +1138,25 @@ public double getClosestAprilTagRotationPIDAutoTurn(){
 
 
  public double getClosestReefPostLeftXDistance(){
-  Pose2d closestReefLeft = getPose().nearest(Field.leftReefLocations);
+  Pose2d closestReefLeft = getPose().nearest(Field.leftReefLocationsRotLeft);
   double x = closestReefLeft.getX()-getPose().getX();
   return x;
 }
 
 public double getClosestReefPostLeftYDistance(){
-  Pose2d closestReefLeft = getPose().nearest(Field.leftReefLocations);
+  Pose2d closestReefLeft = getPose().nearest(Field.leftReefLocationsRotLeft);
   double y = closestReefLeft.getY()-getPose().getY();
   return y;
 }
 
 public double getClosestReefPostRightXDistance(){
-  Pose2d closestReefRight = getPose().nearest(Field.rightReefLocations);
+  Pose2d closestReefRight = getPose().nearest(Field.leftReefLocationsRotLeft);
   double x = closestReefRight.getX()-getPose().getX();
   return x;
 }
 
 public double getClosestReefPostRightYDistance(){
-  Pose2d closestReefRight = getPose().nearest(Field.rightReefLocations);
+  Pose2d closestReefRight = getPose().nearest(Field.leftReefLocationsRotLeft);
   double y = closestReefRight.getY()-getPose().getY();
   return y;
 }
