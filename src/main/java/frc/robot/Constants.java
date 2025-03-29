@@ -108,7 +108,7 @@ public final class Constants
     public static final double rollerMotorSpeed = .5;
     public static final double pivotMotorSpeed = .2;
     public static final double intakeOutPosition = 0;
-    public static final double intakeVerticalPosition = 0;
+    public static final double intakeL1Position = 0;
     public static final double intakeInPosition = 0;
     public static final double outputCurrent = 2;
     public static final double P = 0;

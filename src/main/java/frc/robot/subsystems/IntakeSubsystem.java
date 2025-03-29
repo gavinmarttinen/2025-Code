@@ -57,13 +57,12 @@ public void deployIntake(){
    }
 }
 
-public void retractIntake(){
+public void intakeIn(){
    setMotorPosition(IntakeConstants.intakeInPosition);
 }
 
-public void intakeVertical(){
-   setMotorPosition(IntakeConstants.intakeVerticalPosition);
-   setRollerMotor(IntakeConstants.rollerMotorSpeed);
+public void intakeL1(){
+   setMotorPosition(IntakeConstants.intakeL1Position);
 }
 
 public boolean pivotAtSetpoint(){

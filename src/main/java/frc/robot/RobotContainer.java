@@ -6,15 +6,10 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.util.FileVersionException;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,11 +30,6 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
-import java.io.IOException;
-
-import org.json.simple.parser.ParseException;
-
-import swervelib.SwerveDrive;
 import swervelib.SwerveInputStream;
 
 public class RobotContainer
@@ -57,14 +47,19 @@ public class RobotContainer
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final SendableChooser<Command> autoChooser;
 
-  private final Command intakeCommand = new SequentialCommandGroup(
-    new ParallelCommandGroup(
+  private final Command intakeOutCommand = new ParallelCommandGroup(
     Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint()),
     Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).until(()->armSubsystem.armAtSetpoint()),
-    Commands.run(()->intakeSubsystem.deployIntake(),intakeSubsystem).until(()->intakeSubsystem.isCoralDetected())), //end of parallel
-    Commands.run(()->intakeSubsystem.intakeVertical(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),
+    Commands.run(()->intakeSubsystem.deployIntake(),intakeSubsystem).until(()->intakeSubsystem.isCoralDetected())); //end of parallel
+
+  private final Command intakeInCommand = new SequentialCommandGroup(
+    Commands.run(()->intakeSubsystem.intakeIn(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),
     Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint()));
-  // Applies deadbands and inverts controls because joysticks
+  
+  private final Command intakeL1Command = new SequentialCommandGroup(
+    Commands.run(()->intakeSubsystem.intakeL1(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()));
+
+      // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
   // controls are front-left positive
   // left stick controls translation
@@ -320,6 +315,10 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
        operatorController.povRight().onTrue(Commands.run(()->intakeSubsystem.setRollerMotor(IntakeConstants.rollerMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopRollerMotor(),intakeSubsystem));
        operatorController.povUp().onTrue(Commands.run(()->intakeSubsystem.setPivotMotor(IntakeConstants.pivotMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopPivotMotor(),intakeSubsystem));
        operatorController.povDown().onTrue(Commands.run(()->intakeSubsystem.setPivotMotor(-IntakeConstants.pivotMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopPivotMotor(),intakeSubsystem));
+      // operatorController.povLeft().onTrue(intakeInCommand);
+      // operatorController.povRight().onTrue(intakeOutCommand);
+      // operatorController.povUp().onTrue(intakeL1Command);
+      // operatorController.button(15).onTrue(Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopRollerMotor(),intakeSubsystem));
 
 
        driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
