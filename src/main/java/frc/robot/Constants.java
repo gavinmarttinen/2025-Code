@@ -61,7 +61,7 @@ public final class Constants
     public static final int elevatorMotor1ID = 15; 
     public static final int sensorID = 1;
     public static final double stowPosition = 9.5;
-    public static final double intakePosition = 6.16;
+    public static final double intakePosition = 6;
     public static final double L2Position = 7.53;
     public static final double L3Position = 13;
     public static final double L4Position = 21.95;
