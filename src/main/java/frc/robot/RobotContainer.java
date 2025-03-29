@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -26,10 +27,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import java.io.IOException;
@@ -51,27 +54,17 @@ public class RobotContainer
   private final ArmSubsytem armSubsystem = new ArmSubsytem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final SendableChooser<Command> autoChooser;
 
-  private Command score(double position, double side) {
-    return new SequentialCommandGroup(
-      Commands.run(()-> elevatorSubsystem.setMotorPosition(position), elevatorSubsystem), 
-      Commands.run(()->armSubsystem.setMotorPosition(side), armSubsystem),
-      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
-  }
-
-  private final Command scoreLeftL2 = score(ElevatorConstants.L2Position,ArmConstants.leftIntakePosition);
-  private final Command scoreRightL2 = score(ElevatorConstants.L2Position,ArmConstants.rightIntakePosition);
-  private final Command scoreLeftL3 = score(ElevatorConstants.L3Position,ArmConstants.leftIntakePosition);
-  private final Command scoreRightL3 = score(ElevatorConstants.L3Position,ArmConstants.rightIntakePosition);
-  private final Command scoreLeftL4 = score(ElevatorConstants.L4Position,ArmConstants.leftIntakePosition);
-  private final Command scoreRightL4 = score(ElevatorConstants.L4Position,ArmConstants.rightIntakePosition);
-
-  private final Command intakeCoral = new SequentialCommandGroup(
-  Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.leftIntakePosition),armSubsystem),
-  Commands.run(()-> armSubsystem.setMotorPosition(ArmConstants.VerticalPosition)));
-
-   private final SendableChooser<Command> autoChooser;
-    // Applies deadbands and inverts controls because joysticks
+  private final Command intakeCommand = new SequentialCommandGroup(
+    new ParallelCommandGroup(
+    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint()),
+    Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).until(()->armSubsystem.armAtSetpoint()),
+    Commands.run(()->intakeSubsystem.deployIntake(),intakeSubsystem).until(()->intakeSubsystem.isCoralDetected())), //end of parallel
+    Commands.run(()->intakeSubsystem.intakeVertical(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),
+    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint()));
+  // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
   // controls are front-left positive
   // left stick controls translation
@@ -219,6 +212,8 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       NamedCommands.registerCommand("driveToLeftReefPost", drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()-> 
       drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceLeft()));
 
+      NamedCommands.registerCommand("climberOut", Commands.run(()->climberSubsystem.climberOut(), climberSubsystem).until(()->climberSubsystem.isClimberOut()));
+
       NamedCommands.registerCommand("stopArmMotor", Commands.run(()->armSubsystem.stopMotor(),armSubsystem).withTimeout(0.1));
 
       NamedCommands.registerCommand("Named Command Print Statement", Commands.print("Named Command Running").withTimeout(3));
@@ -307,9 +302,9 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
     //  //driverController.back().whileTrue(drivebase.centerModulesCommand());
      // driverController.leftBumper().onTrue(Commands.none());
      // driverController.rightBumper().onTrue(Commands.none());
-    } else
-    {
-       driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+    } 
+    else {
+      
        operatorController.square().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem));
        operatorController.triangle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L3Position),elevatorSubsystem));
        operatorController.circle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem));
@@ -320,25 +315,29 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
        operatorController.button(14).whileTrue(Commands.run(()->climberSubsystem.setMotor(-ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
        operatorController.L1().onTrue(Commands.run(()->climberSubsystem.setMotorPosition(ClimberConstants.climberOutPosition), climberSubsystem)).onFalse(climberSubsystem.getDefaultCommand());
        operatorController.R1().onTrue(Commands.run(()->climberSubsystem.setMotorPosition(ClimberConstants.climberInPosition), climberSubsystem)).onFalse(climberSubsystem.getDefaultCommand());
-       operatorController.povDown().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
-       operatorController.povLeft().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
-       operatorController.povRight().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
+       //operatorController.povDown().onTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).onFalse(armSubsystem.getDefaultCommand());
+       operatorController.povLeft().onTrue(Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopRollerMotor(),intakeSubsystem));
+       operatorController.povRight().onTrue(Commands.run(()->intakeSubsystem.setRollerMotor(IntakeConstants.rollerMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopRollerMotor(),intakeSubsystem));
+       operatorController.povUp().onTrue(Commands.run(()->intakeSubsystem.setPivotMotor(IntakeConstants.pivotMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopPivotMotor(),intakeSubsystem));
+       operatorController.povDown().onTrue(Commands.run(()->intakeSubsystem.setPivotMotor(-IntakeConstants.pivotMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopPivotMotor(),intakeSubsystem));
 
-     // driverController.R1().whileTrue(drivebase.driveFieldOriented(driveAngularVelocitySlow));
-      //driverController.R1().whileTrue(drivebase.driveFieldOriented(autoTurnToReef));
-     // driverController.L1().whileTrue(drivebase.driveFieldOriented(autoTurnToFeederStation));
-     driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTag(),drivebase));
-     driverController.L1().whileTrue(Commands.run(()->autoAlignToClosestFeederStation(),drivebase));
-      driverController.L2().whileTrue(drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
-      driverController.R2().whileTrue(drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
-     // driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagRight()));
-      // driverController.L1().onTrue(Commands.runOnce(SignalLogger::start));
-       //driverController.L2().onTrue(Commands.runOnce(SignalLogger::stop));
-       //driverController.triangle().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-     // driverController.square().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-     // driverController.cross().whileTrue(elevatorSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
-     // driverController.circle().whileTrue(elevatorSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-       //   driverController.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+
+       driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+       driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTag(),drivebase));
+       driverController.L1().whileTrue(Commands.run(()->autoAlignToClosestFeederStation(),drivebase));
+       driverController.L2().whileTrue(drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
+       driverController.R2().whileTrue(drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
+      // driverController.triangle().onTrue(Commands.run(()->intakeSubsystem.setMotorPosition(IntakeConstants.intakeVerticalPosition),intakeSubsystem));
+      // driverController.circle().onTrue(Commands.run(()->intakeSubsystem.setMotorPosition(IntakeConstants.intakeOutPosition),intakeSubsystem));
+     
+    // driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagRight()));
+    // driverController.L1().onTrue(Commands.runOnce(SignalLogger::start));
+    //driverController.L2().onTrue(Commands.runOnce(SignalLogger::stop));
+    //driverController.triangle().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    // driverController.square().whileTrue(elevatorSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    // driverController.cross().whileTrue(elevatorSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    // driverController.circle().whileTrue(elevatorSubsystem.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    //   driverController.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
     //   driverController.b().whileTrue(
     //       drivebase.driveToPose(
     //           new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))

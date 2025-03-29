@@ -36,4 +36,20 @@ public ClimberSubsystem() {
 public void stopMotor() {
      climberMotor.set(0);
  }
+
+public void climberOut(){
+   climberMotor.set(1);
+   if(encoder.get() > ClimberConstants.climberInPosition&&encoder.get() < ClimberConstants.climberOutPosition){
+      setMotorPosition(ClimberConstants.climberOutPosition);
+   }
+}
+
+public boolean isClimberOut(){
+   if(Math.abs(ClimberConstants.climberOutPosition-encoder.get())<0.01){
+      return true;
+   }
+   else{
+      return false;
+   }
+}
 }

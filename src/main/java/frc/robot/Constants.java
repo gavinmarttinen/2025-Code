@@ -59,7 +59,7 @@ public final class Constants
     public static final int elevatorMotor1ID = 15; 
     public static final int sensorID = 1;
     public static final double stowPosition = 9.5;
-    public static final double intakePosition = 6.16;
+    public static final double intakePosition = 10.465; //6.16;
     public static final double L2Position = 7.53;
     public static final double L3Position = 13;
     public static final double L4Position = 21.95;
@@ -81,9 +81,6 @@ public final class Constants
 
     public static final int armMotorID = 16;
     public static final int armEncoderID = 9;
-    public static final double armScoringPosition = 1;
-    public static final double leftIntakePosition = 1;
-    public static final double rightIntakePosition = 1;
     public static final double VerticalPosition = 0.0253;
     public static final double preScoreRight = .396;
     public static final double preScoreLeft = .643;
@@ -100,6 +97,21 @@ public final class Constants
     public static final double climberOutPosition = 0.863;
     public static final double climberInPosition = 0.393; //0.320;
     public static final double P = 9;
+    public static final double I = 0;
+    public static final double D = 0;
+  }
+
+  public static class IntakeConstants {
+    public static final int rollerMotorID = 9;
+    public static final int pivotMotorID = 18;
+    public static final int intakeEncoderID = 2;
+    public static final double rollerMotorSpeed = .5;
+    public static final double pivotMotorSpeed = .2;
+    public static final double intakeOutPosition = 0;
+    public static final double intakeVerticalPosition = 0;
+    public static final double intakeInPosition = 0;
+    public static final double outputCurrent = 2;
+    public static final double P = 0;
     public static final double I = 0;
     public static final double D = 0;
   }

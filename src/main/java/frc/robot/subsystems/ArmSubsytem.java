@@ -34,4 +34,7 @@ public void stopMotor(){
     armMotor.set(0);
 }
 
+public boolean armAtSetpoint(){
+    return pidController.atSetpoint();
+ }
 }

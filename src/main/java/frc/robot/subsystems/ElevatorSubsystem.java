@@ -92,4 +92,12 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
    return m_sysIdRoutine.dynamic(direction);
 }
 
+public boolean elevatorAtSetpoint(){
+   if(Math.abs(elevatorMotor.getClosedLoopError().getValueAsDouble())<0.01){
+      return true;
+   }
+   else {
+      return false;
+   }
+}
 }
