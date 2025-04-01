@@ -55,6 +55,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "runIntakeWithSensor"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [

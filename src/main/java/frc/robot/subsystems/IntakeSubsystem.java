@@ -20,13 +20,15 @@ public IntakeSubsystem() {
     
    rollerMotor.setInverted(false);
    pivotMotor.setInverted(false);
-
+   PIDController.setTolerance(0.01);
+   
     
 }
 
 @Override
  public void periodic() {
     SmartDashboard.putNumber("Intake Encoder", encoder.get());
+    SmartDashboard.putNumber("Roller Motor Current", rollerMotor.getOutputCurrent());
  }
 
  public void setMotorPosition(double setpoint) {
@@ -49,8 +51,20 @@ public void stopPivotMotor() {
    rollerMotor.set(0);
 }
 
+public void stopBothMotors(){
+   rollerMotor.set(0);
+   pivotMotor.set(0);
+}
+
 public void deployIntake(){
-   setMotorPosition(IntakeConstants.intakeOutPosition);
+   pivotMotor.set(PIDController.calculate(encoder.get(), IntakeConstants.intakeOutPosition));
+   setRollerMotor(IntakeConstants.rollerMotorSpeed);
+   if(rollerMotor.getOutputCurrent()>IntakeConstants.outputCurrent){
+      stopRollerMotor();
+   }
+}
+
+public void runRollerWithSensor(){
    setRollerMotor(IntakeConstants.rollerMotorSpeed);
    if(rollerMotor.getOutputCurrent()>IntakeConstants.outputCurrent){
       stopRollerMotor();
@@ -58,11 +72,11 @@ public void deployIntake(){
 }
 
 public void intakeIn(){
-   setMotorPosition(IntakeConstants.intakeInPosition);
+   pivotMotor.set(PIDController.calculate(encoder.get(), IntakeConstants.intakeInPosition));
 }
 
 public void intakeL1(){
-   setMotorPosition(IntakeConstants.intakeL1Position);
+   pivotMotor.set(PIDController.calculate(encoder.get(), IntakeConstants.intakeL1Position));
 }
 
 public boolean pivotAtSetpoint(){

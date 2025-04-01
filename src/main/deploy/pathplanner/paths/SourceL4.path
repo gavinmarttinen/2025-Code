@@ -33,16 +33,26 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "IntakeHeight Trigger",
-      "waypointRelativePos": 0.43869516310461415,
+      "name": "grabCoral",
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "grabCoral"
+        }
+      }
     },
     {
-      "name": "L4Height Trigger",
-      "waypointRelativePos": 0.7401574803149668,
+      "name": "L4Height",
+      "waypointRelativePos": 0.38695163104611735,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L4Height"
+        }
+      }
     }
   ],
   "globalConstraints": {

@@ -33,6 +33,17 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "autoIntake",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntake"
+        }
+      }
+    },
+    {
       "name": "L4Height Trigger",
       "waypointRelativePos": 0.06775700934579118,
       "endWaypointRelativePos": null,

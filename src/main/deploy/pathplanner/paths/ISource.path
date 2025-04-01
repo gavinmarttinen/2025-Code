@@ -33,16 +33,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "StowHeight Trigger",
-      "waypointRelativePos": 0.14563862928348842,
-      "endWaypointRelativePos": 0.8964174454828729,
-      "command": null
-    },
-    {
-      "name": "StowHeight Trigger",
-      "waypointRelativePos": 1.0,
+      "name": "autoIntakeIn",
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeIn"
+        }
+      }
     }
   ],
   "globalConstraints": {
