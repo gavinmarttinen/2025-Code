@@ -93,7 +93,7 @@ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
 }
 
 public boolean elevatorAtSetpoint(){
-   if(Math.abs(elevatorMotor.getClosedLoopError().getValueAsDouble())<0.01){
+   if(Math.abs(elevatorMotor.getClosedLoopError().getValueAsDouble())<0.1){
       return true;
    }
    else {

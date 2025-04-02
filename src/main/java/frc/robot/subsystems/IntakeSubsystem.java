@@ -52,7 +52,7 @@ public void stopPivotMotor() {
 }
 
 public void stopBothMotors(){
-   rollerMotor.set(0);
+   rollerMotor.set(0.1);
    pivotMotor.set(0);
 }
 
@@ -60,7 +60,7 @@ public void deployIntake(){
    pivotMotor.set(PIDController.calculate(encoder.get(), IntakeConstants.intakeOutPosition));
    setRollerMotor(IntakeConstants.rollerMotorSpeed);
    if(rollerMotor.getOutputCurrent()>IntakeConstants.outputCurrent){
-      stopRollerMotor();
+      setRollerMotor(0.1);
    }
 }
 

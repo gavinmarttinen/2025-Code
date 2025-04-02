@@ -19,6 +19,7 @@ import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -83,7 +84,7 @@ public class SwerveSubsystem extends SubsystemBase
    * PhotonVision class to keep an accurate odometry.
    */
   private       Vision              vision;
-
+  private boolean left;
    
      
 
@@ -140,7 +141,7 @@ public class SwerveSubsystem extends SubsystemBase
     }
     setupPathPlanner();
     m_field = new Field2d();
-    
+    left = true;
    
     
   }
@@ -160,6 +161,7 @@ public class SwerveSubsystem extends SubsystemBase
                                              Rotation2d.fromDegrees(0)));
     m_poseEstimator = new SwerveDrivePoseEstimator(getKinematics(), getHeading(), swerveDrive.getModulePositions(), new Pose2d());
     m_field = new Field2d();
+    left = true;
   }
 
   /**
@@ -1027,49 +1029,61 @@ public double getClosestTagYDistance(){
   if(closestTag==Field.aprilTagSixLocation||closestTag==Field.aprilTagTwentyTwoLocation){
     
     if(getHeading().getDegrees()<125&&getHeading().getDegrees()>-55){
+      left = true;
       return pidController.calculate(getHeading().getDegrees(),30);
     }
     else{
+      left = false;
       return pidController.calculate(getHeading().getDegrees(),210);
     }
   }
  else if(closestTag==Field.aprilTagSevenLocation||closestTag==Field.aprilTagTwentyOneLocation){
   if(getHeading().getDegrees()<180&&getHeading().getDegrees()>0){
+    left = true;
     return pidController.calculate(getHeading().getDegrees(),90);
   }
   else{
+    left = false;
     return pidController.calculate(getHeading().getDegrees(),270);
   }
   }
  else if(closestTag==Field.aprilTagEightLocation||closestTag==Field.aprilTagTwentyLocation){
   if(getHeading().getDegrees()<60&&getHeading().getDegrees()>-120){
+    left = false;
     return pidController.calculate(getHeading().getDegrees(),330);
   }
   else{
+    left = true;
     return pidController.calculate(getHeading().getDegrees(),150);
   }
   }
   else if(closestTag==Field.aprilTagNineLocation||closestTag==Field.aprilTagNineteenLocation){
     if(getHeading().getDegrees()<120&&getHeading().getDegrees()>-60){
+      left = false;
       return pidController.calculate(getHeading().getDegrees(),30);
     }
     else{
+      left = true;
       return pidController.calculate(getHeading().getDegrees(),210);
     }
   }
   else if(closestTag==Field.aprilTagTenLocation||closestTag==Field.aprilTagEighteenLocation){
     if(getHeading().getDegrees()<180&&getHeading().getDegrees()>0){
+      left = false;
       return pidController.calculate(getHeading().getDegrees(),90);
     }
     else{
+      left = true;
       return pidController.calculate(getHeading().getDegrees(),270);
     }
   }
   else if(closestTag==Field.aprilTagElevenLocation||closestTag==Field.aprilTagSeventeenLocation){
     if(getHeading().getDegrees()<60&&getHeading().getDegrees()>-120){
+      left = true;
       return pidController.calculate(getHeading().getDegrees(),330);
     }
     else{
+      left = false;
       return pidController.calculate(getHeading().getDegrees(),150);
     }
   }
@@ -1138,27 +1152,27 @@ public double getClosestAprilTagRotationPIDAutoTurn(){
 
 
  public double getClosestReefPostLeftXDistance(){
-  Pose2d closestReefLeft = getPose().nearest(Field.leftReefLocations);
+  Pose2d closestReefLeft = getPose().nearest(left?Field.leftReefLocationsRotLeft:Field.leftReefLocationsRotRight);
   double x = closestReefLeft.getX()-getPose().getX();
-  return x;
+  return MathUtil.clamp(x, -1, 1);
 }
 
 public double getClosestReefPostLeftYDistance(){
-  Pose2d closestReefLeft = getPose().nearest(Field.leftReefLocations);
+  Pose2d closestReefLeft = getPose().nearest(left?Field.leftReefLocationsRotLeft:Field.leftReefLocationsRotRight);
   double y = closestReefLeft.getY()-getPose().getY();
-  return y;
+  return MathUtil.clamp(y, -1, 1);
 }
 
 public double getClosestReefPostRightXDistance(){
-  Pose2d closestReefRight = getPose().nearest(Field.rightReefLocations);
+  Pose2d closestReefRight = getPose().nearest(left?Field.rightReefLocationsRotLeft:Field.rightReefLocationsRotRight);
   double x = closestReefRight.getX()-getPose().getX();
-  return x;
+  return MathUtil.clamp(x, -1, 1);
 }
 
 public double getClosestReefPostRightYDistance(){
-  Pose2d closestReefRight = getPose().nearest(Field.rightReefLocations);
+  Pose2d closestReefRight = getPose().nearest(left?Field.rightReefLocationsRotLeft:Field.rightReefLocationsRotRight);
   double y = closestReefRight.getY()-getPose().getY();
-  return y;
+  return MathUtil.clamp(y, -1, 1);
 }
 
 public boolean isInDistanceToleranceRight(){
