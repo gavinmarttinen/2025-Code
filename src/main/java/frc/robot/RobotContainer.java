@@ -53,7 +53,10 @@ public class RobotContainer
     Commands.run(()->intakeSubsystem.deployIntake(),intakeSubsystem).until(()->intakeSubsystem.isCoralDetected())); //end of parallel
 
   private final Command intakeInCommand = new SequentialCommandGroup(
-    Commands.run(()->intakeSubsystem.intakeIn(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),
+    new ParallelCommandGroup(
+    Commands.run(()->intakeSubsystem.intakeIn(), intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),
+    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem)).until(()->elevatorSubsystem.elevatorAtSetpoint()),
+  
     Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(0.75),
     new ParallelCommandGroup(Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed),intakeSubsystem).withTimeout(0.5).andThen(Commands.run(()->intakeSubsystem.setRollerMotor(0),intakeSubsystem).withTimeout(0.1)),
     Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint())),
@@ -329,7 +332,7 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       //operatorController.povDown().onTrue(Commands.run(()->intakeSubsystem.setPivotMotor(-IntakeConstants.pivotMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopPivotMotor(),intakeSubsystem));
      operatorController.povLeft().onTrue(intakeInCommand);
      operatorController.povRight().onTrue(intakeOutCommand);
-      operatorController.povUp().onTrue(intakeL1Command);
+      operatorController.povUp().onTrue(intakeL1Command.alongWith(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem)));
       operatorController.button(9).whileTrue(Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed), intakeSubsystem));
       operatorController.button(10).whileTrue(Commands.run(()->intakeSubsystem.setRollerMotor(IntakeConstants.rollerMotorSpeed), intakeSubsystem));
 
