@@ -44,8 +44,19 @@
       }
     },
     {
+      "name": "PreScoreLeft",
+      "waypointRelativePos": 0.3898117386489404,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PreScoreLeft"
+        }
+      }
+    },
+    {
       "name": "L4Height",
-      "waypointRelativePos": 0.38695163104611735,
+      "waypointRelativePos": 0.9900332225913622,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",

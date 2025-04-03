@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -90,5 +93,14 @@ public boolean isCoralDetected(){
    else{
       return false;
    }
+}
+
+   public boolean isCoralDetectedAndPivotAtSetpoint(){
+      if (rollerMotor.getOutputCurrent()>IntakeConstants.outputCurrent&&PIDController.atSetpoint()){
+         return true;
+      }
+      else{
+         return false;
+      }
 }
 }

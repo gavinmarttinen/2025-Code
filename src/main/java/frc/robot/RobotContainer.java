@@ -50,19 +50,21 @@ public class RobotContainer
   private final Command intakeOutCommand = new ParallelCommandGroup(
    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint()),
     Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).until(()->armSubsystem.armAtSetpoint()),
-    Commands.run(()->intakeSubsystem.deployIntake(),intakeSubsystem).until(()->intakeSubsystem.isCoralDetected())); //end of parallel
+    Commands.run(()->intakeSubsystem.deployIntake(),intakeSubsystem).until(()->intakeSubsystem.isCoralDetectedAndPivotAtSetpoint())); //end of parallel
 
   private final Command intakeInCommand = new SequentialCommandGroup(
-    new ParallelCommandGroup(
+    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint()),
     Commands.run(()->intakeSubsystem.intakeIn(), intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),
-    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem)).until(()->elevatorSubsystem.elevatorAtSetpoint()),
-  
-    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(0.75),
+    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(1),
     new ParallelCommandGroup(Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed),intakeSubsystem).withTimeout(0.5).andThen(Commands.run(()->intakeSubsystem.setRollerMotor(0),intakeSubsystem).withTimeout(0.1)),
-    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint())),
-    Commands.run(()->intakeSubsystem.intakeL1(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint())).finallyDo(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition));
+    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem)));
+    //Commands.run(()->intakeSubsystem.intakeL1(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint())).finallyDo(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition));
 
-  private final Command intakeL1Command = new SequentialCommandGroup(
+  private final Command intakeL1Command = new ParallelCommandGroup(
+    Commands.run(()->intakeSubsystem.intakeL1(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),
+    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem));
+
+  private final Command autoIntakeL1Command = new ParallelCommandGroup(
     Commands.run(()->intakeSubsystem.intakeL1(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()));
 
   private final Command autoIntakeInCommand = new SequentialCommandGroup(
@@ -209,7 +211,7 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).withTimeout(1));
 
       NamedCommands.registerCommand("VerticalPosition", 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(1.4).andThen(Commands.run(()->armSubsystem.stopMotor(), armSubsystem).withTimeout(0.1)));
+      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).until(()->armSubsystem.armAtSetpoint()));
 
       NamedCommands.registerCommand("descorePosition", 
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.descorePosition),armSubsystem).withTimeout(1.5));
@@ -224,39 +226,20 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
 
       NamedCommands.registerCommand("stopArmMotor", Commands.run(()->armSubsystem.stopMotor(),armSubsystem).withTimeout(0.1));
 
-      NamedCommands.registerCommand("autoIntakeIn", autoIntakeInCommand);
+      NamedCommands.registerCommand("IntakeIn", autoIntakeInCommand);
+
+      NamedCommands.registerCommand("IntakeL1", autoIntakeL1Command);
+
+      NamedCommands.registerCommand("climberOut", Commands.run(()->climberSubsystem.climberOut(), climberSubsystem));
       
       NamedCommands.registerCommand("grabCoral", new SequentialCommandGroup(
-      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(0.75),
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(1),
       new ParallelCommandGroup(
       Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed),intakeSubsystem).withTimeout(0.5).andThen(Commands.run(()->intakeSubsystem.setRollerMotor(0),intakeSubsystem).withTimeout(0.1)),
-      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint())),
-      Commands.run(()->intakeSubsystem.intakeL1(),intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint())).finallyDo(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition)));
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem))));
 
       NamedCommands.registerCommand("runIntakeWithSensor", Commands.run(()->intakeSubsystem.runRollerWithSensor(),intakeSubsystem).until(()->intakeSubsystem.isCoralDetected()));
 
-      NamedCommands.registerCommand("Named Command Print Statement", Commands.print("Named Command Running").withTimeout(3));
-
-      new EventTrigger("Event Trigger Print Statement").whileTrue(Commands.print("Event Trigger Running").withTimeout(3));
-
-      new EventTrigger("L4Height Trigger").onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position), elevatorSubsystem).withTimeout(4)); 
-
-      new EventTrigger("IntakeHeight Trigger").onTrue(
-      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(0.8));
-
-      new EventTrigger("StowHeight Trigger").onTrue(
-      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).withTimeout(4));
-
-      new EventTrigger("PreScoreLeft Trigger").onTrue( 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft),armSubsystem).until(()->armSubsystem.armAtSetpoint()));
-      
-      new EventTrigger("PreScoreRight Trigger").onTrue(
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight),armSubsystem).until(()->armSubsystem.armAtSetpoint()));
-      new EventTrigger("VerticalPosition Trigger").onTrue( 
-      Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).until(()->armSubsystem.armAtSetpoint()));
-
-      new EventTrigger("driveToLeftReefPost Trigger").onTrue(drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()-> 
-      drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceLeft()));
       // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -315,10 +298,9 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
     } 
     else {
       
-       operatorController.cross().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem));
-      // operatorController.triangle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L3Position),elevatorSubsystem));
+       operatorController.triangle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem));
        operatorController.circle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem));
-       operatorController.triangle().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
+       operatorController.cross().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem));
        operatorController.square().onTrue(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L2Position),elevatorSubsystem));
        operatorController.button(15).whileTrue(Commands.run(()->elevatorSubsystem.resetEncoder(), elevatorSubsystem));
        operatorController.button(13).whileTrue(Commands.run(()->climberSubsystem.setMotor(ClimberConstants.climberMotorSpeed),climberSubsystem)).whileFalse(Commands.run(()->climberSubsystem.stopMotor(),climberSubsystem));
@@ -332,15 +314,19 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       //operatorController.povDown().onTrue(Commands.run(()->intakeSubsystem.setPivotMotor(-IntakeConstants.pivotMotorSpeed), intakeSubsystem)).whileFalse(Commands.run(()->intakeSubsystem.stopPivotMotor(),intakeSubsystem));
      operatorController.povLeft().onTrue(intakeInCommand);
      operatorController.povRight().onTrue(intakeOutCommand);
-      operatorController.povUp().onTrue(intakeL1Command.alongWith(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem)));
-      operatorController.button(9).whileTrue(Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed), intakeSubsystem));
-      operatorController.button(10).whileTrue(Commands.run(()->intakeSubsystem.setRollerMotor(IntakeConstants.rollerMotorSpeed), intakeSubsystem));
+      operatorController.povUp().onTrue(intakeL1Command);
+      operatorController.button(9).whileTrue(new ParallelCommandGroup(Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed), intakeSubsystem),
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem)))
+      .onFalse(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem));
+      operatorController.button(10).whileTrue(new ParallelCommandGroup(Commands.run(()->intakeSubsystem.setRollerMotor(IntakeConstants.rollerMotorSpeed), intakeSubsystem),
+      Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem)))
+      .onFalse(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem));
 
-
+      driverController.circle().onTrue(Commands.run(()->climberSubsystem.climberOut(), climberSubsystem));
        driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
        driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTag(),drivebase));
       // driverController.L1().whileTrue(Commands.run(()->autoAlignToClosestFeederStation(),drivebase));
-      driverController.L1().onTrue(Commands.run(()->intakeSubsystem.setMotorPosition(IntakeConstants.algaePosition), intakeSubsystem));
+      driverController.L1().onTrue(new ParallelCommandGroup(Commands.run(()->intakeSubsystem.setMotorPosition(IntakeConstants.algaePosition), intakeSubsystem),Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem)));
        driverController.L2().whileTrue(drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
        driverController.R2().whileTrue(drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
       // driverController.triangle().onTrue(Commands.run(()->intakeSubsystem.setMotorPosition(IntakeConstants.intakeVerticalPosition),intakeSubsystem));

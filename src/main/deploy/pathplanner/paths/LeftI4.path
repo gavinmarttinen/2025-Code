@@ -33,27 +33,48 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "autoIntake",
+      "name": "climberOut",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "autoIntake"
+          "name": "climberOut"
         }
       }
     },
     {
-      "name": "L4Height Trigger",
-      "waypointRelativePos": 0.06775700934579118,
+      "name": "IntakeL1",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeL1"
+        }
+      }
     },
     {
-      "name": "L4Height Trigger",
-      "waypointRelativePos": 1.0,
+      "name": "L4Height",
+      "waypointRelativePos": 0.33,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L4Height"
+        }
+      }
+    },
+    {
+      "name": "PreScoreLeft",
+      "waypointRelativePos": 0.33,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PreScoreLeft"
+        }
+      }
     }
   ],
   "globalConstraints": {

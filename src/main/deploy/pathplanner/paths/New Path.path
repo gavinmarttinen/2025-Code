@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.388948863636363,
-        "y": 1.9259801136363626
+        "x": 6.4915056818181816,
+        "y": 6.403224431818181
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.464542740672626,
-        "y": 2.466758010465134
+        "x": 5.5641477272727276,
+        "y": 6.403224431818181
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.662246621621622,
-        "y": 2.829307432432431
+        "x": 4.178096590909091,
+        "y": 6.403224431818181
       },
       "prevControl": {
-        "x": 5.89585620591883,
-        "y": 2.7313698258091352
+        "x": 5.265,
+        "y": 6.393252840909091
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "climberOut",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -45,7 +45,7 @@
     },
     {
       "name": "IntakeL1",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -56,7 +56,7 @@
     },
     {
       "name": "L4Height",
-      "waypointRelativePos": 0.33,
+      "waypointRelativePos": 0.5,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -66,19 +66,30 @@
       }
     },
     {
-      "name": "PreScoreRight",
-      "waypointRelativePos": 0.33,
+      "name": "VerticalPosition",
+      "waypointRelativePos": 0.5,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "PreScoreRight"
+          "name": "VerticalPosition"
+        }
+      }
+    },
+    {
+      "name": "IntakeIn",
+      "waypointRelativePos": 0.7464008859357603,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeIn"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 1.0,
     "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 360.0,
@@ -86,14 +97,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.0,
-    "rotation": -150.0
+    "velocity": 0,
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -137.56377021146483
+    "rotation": 180.0
   },
   "useDefaultConstraints": false
 }

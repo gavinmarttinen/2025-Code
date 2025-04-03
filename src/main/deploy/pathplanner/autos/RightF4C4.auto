@@ -5,22 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "RightF4"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PreScoreRight"
-                }
-              }
-            ]
+            "pathName": "RightF4"
           }
         },
         {
@@ -61,35 +48,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SourceC4"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1.9
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "PreScoreRight"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "pathName": "SourceC4"
           }
         },
         {

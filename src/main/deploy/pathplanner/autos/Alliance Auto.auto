@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "parallel",
           "data": {
-            "waitTime": 1.0
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeL1"
+                }
+              }
+            ]
           }
         },
         {
@@ -30,6 +43,12 @@
                 "type": "named",
                 "data": {
                   "name": "PreScoreLeft"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "climberOut"
                 }
               }
             ]
