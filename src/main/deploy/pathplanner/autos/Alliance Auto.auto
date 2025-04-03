@@ -13,12 +13,6 @@
                 "data": {
                   "waitTime": 1.0
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeL1"
-                }
               }
             ]
           }

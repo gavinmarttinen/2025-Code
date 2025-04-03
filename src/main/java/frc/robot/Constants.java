@@ -159,8 +159,8 @@ public final class Constants
     public static final Pose2d aprilTagElevenLeftReefRotLeft = aprilTagSevenLeftReefRotLeft.rotateAround(centerOfRightReef.getTranslation(), Rotation2d.fromDegrees(240));
     public static final Pose2d aprilTagElevenRightReefRotLeft = aprilTagSevenRightReefRotLeft.rotateAround(centerOfRightReef.getTranslation(), Rotation2d.fromDegrees(240));
 
-    public static final Pose2d aprilTagTwentyOneLeftReefRotLeft = new Pose2d(5.914,3.862,Rotation2d.fromDegrees(0));//red side//new Pose2d(5.914,3.862,Rotation2d.fromDegrees(0));//red side
-    public static final Pose2d aprilTagTwentyOneRightReefRotLeft = new Pose2d(5.914, 3.9354,Rotation2d.fromDegrees(0));//red side new Pose2d(5.872, 4.092,Rotation2d.fromDegrees(0));
+    public static final Pose2d aprilTagTwentyOneLeftReefRotLeft = new Pose2d(5.84047,3.7096,Rotation2d.fromDegrees(0));//red side//new Pose2d(5.914,3.862,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagTwentyOneRightReefRotLeft = new Pose2d(5.777, 3.9967,Rotation2d.fromDegrees(0));//red side new Pose2d(5.872, 4.092,Rotation2d.fromDegrees(0));
     public static final Pose2d aprilTagSeventeenLeftReefRotLeft = aprilTagTwentyOneLeftReefRotLeft.rotateAround(centerOfLeftReef.getTranslation(), Rotation2d.fromDegrees(240));
     public static final Pose2d aprilTagSeventeenRightReefRotLeft = aprilTagTwentyOneRightReefRotLeft.rotateAround(centerOfLeftReef.getTranslation(), Rotation2d.fromDegrees(240));
     public static final Pose2d aprilTagEighteenLeftReefRotLeft = aprilTagTwentyOneLeftReefRotLeft.rotateAround(centerOfLeftReef.getTranslation(), Rotation2d.fromDegrees(180));

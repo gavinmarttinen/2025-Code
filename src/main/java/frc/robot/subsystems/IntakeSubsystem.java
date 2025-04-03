@@ -1,12 +1,6 @@
 package frc.robot.subsystems;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase{
-   private final SparkMax rollerMotor = new SparkMax(IntakeConstants.rollerMotorID, MotorType.kBrushless);
+   private final TalonFX rollerMotor = new TalonFX(IntakeConstants.rollerMotorID);
    private final TalonFX pivotMotor = new TalonFX(IntakeConstants.pivotMotorID);
    private final DutyCycleEncoder encoder = new DutyCycleEncoder(8);
    private final PIDController PIDController = new PIDController(IntakeConstants.P, IntakeConstants.I, IntakeConstants.D);
@@ -31,7 +25,7 @@ public IntakeSubsystem() {
 @Override
  public void periodic() {
     SmartDashboard.putNumber("Intake Encoder", encoder.get());
-    SmartDashboard.putNumber("Roller Motor Current", rollerMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Roller Motor Current", rollerMotor.getSupplyCurrent().getValueAsDouble());
  }
 
  public void setMotorPosition(double setpoint) {
@@ -62,14 +56,14 @@ public void stopBothMotors(){
 public void deployIntake(){
    pivotMotor.set(PIDController.calculate(encoder.get(), IntakeConstants.intakeOutPosition));
    setRollerMotor(IntakeConstants.rollerMotorSpeed);
-   if(rollerMotor.getOutputCurrent()>IntakeConstants.outputCurrent){
+   if(rollerMotor.getSupplyCurrent().getValueAsDouble()>IntakeConstants.outputCurrent){
       setRollerMotor(0.1);
    }
 }
 
 public void runRollerWithSensor(){
    setRollerMotor(IntakeConstants.rollerMotorSpeed);
-   if(rollerMotor.getOutputCurrent()>IntakeConstants.outputCurrent){
+   if(rollerMotor.getSupplyCurrent().getValueAsDouble()>IntakeConstants.outputCurrent){
       stopRollerMotor();
    }
 }
@@ -87,7 +81,7 @@ public boolean pivotAtSetpoint(){
 }
 
 public boolean isCoralDetected(){
-   if (rollerMotor.getOutputCurrent()>IntakeConstants.outputCurrent){
+   if (rollerMotor.getSupplyCurrent().getValueAsDouble()>IntakeConstants.outputCurrent){
       return true;
    }
    else{
@@ -96,7 +90,7 @@ public boolean isCoralDetected(){
 }
 
    public boolean isCoralDetectedAndPivotAtSetpoint(){
-      if (rollerMotor.getOutputCurrent()>IntakeConstants.outputCurrent&&PIDController.atSetpoint()){
+      if (rollerMotor.getSupplyCurrent().getValueAsDouble()>IntakeConstants.outputCurrent&&PIDController.atSetpoint()){
          return true;
       }
       else{
