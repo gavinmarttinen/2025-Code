@@ -83,7 +83,7 @@ public final class Constants
 
     public static final int armMotorID = 16;
     public static final int armEncoderID = 9;
-    public static final double VerticalPosition = 0.0253;
+    public static final double VerticalPosition = 0.017; //0.0253;
     public static final double preScoreRight = .396;
     public static final double preScoreLeft = .643;
     public static final double descorePosition = .81;
@@ -97,7 +97,7 @@ public final class Constants
     public static final int climberEncoderID = 46;
     public static final double climberMotorSpeed = 1;
     public static final double climberOutPosition = 0.863;
-    public static final double climberInPosition = 0.393; //0.320;
+    public static final double climberInPosition = 0.373;//0.393; //0.320;
     public static final double P = 9;
     public static final double I = 0;
     public static final double D = 0;
@@ -107,14 +107,14 @@ public final class Constants
     public static final int rollerMotorID = 9;
     public static final int pivotMotorID = 18;
     public static final int intakeEncoderID = 2;
-    public static final double rollerMotorSpeed = .8;
+    public static final double rollerMotorSpeed = 1;
     public static final double pivotMotorSpeed = .2;
     public static final double intakeOutPosition = 0.218;
     public static final double intakeL1Position = 0.495;
     public static final double intakeInPosition = 0.607;
     public static final double algaePosition = 0.412;
-    public static final double outputCurrent = 15;
-    public static final double P = 1;
+    public static final double outputCurrent = 17; //15;
+    public static final double P = 1.6;
     public static final double I = 0;
     public static final double D = 0;
   }
@@ -146,8 +146,8 @@ public final class Constants
     public static final Pose2d aprilTagTwentyTwoLocation = new Pose2d(Units.inchesToMeters(193.10), Units.inchesToMeters(130.17),Rotation2d.fromDegrees(0));//blue side
 
     //Left Side of Robot Facing Reef
-    public static final Pose2d aprilTagSevenLeftReefRotLeft = new Pose2d(14.423,3.82,Rotation2d.fromDegrees(0));//red side
-    public static final Pose2d aprilTagSevenRightReefRotLeft = new Pose2d(14.423,4.129,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagSevenLeftReefRotLeft = new Pose2d(14.403,3.711,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagSevenRightReefRotLeft = new Pose2d(14.403,4.02,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagSixLeftReefRotLeft = aprilTagSevenLeftReefRotLeft.rotateAround(centerOfRightReef.getTranslation(), Rotation2d.fromDegrees(300));//new Pose2d(13.512, 2.831,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagSixRightReefRotLeft = aprilTagSevenRightReefRotLeft.rotateAround(centerOfRightReef.getTranslation(), Rotation2d.fromDegrees(300));//new Pose2d(13.7757, 2.8364,Rotation2d.fromDegrees(0));//red side
     public static final Pose2d aprilTagEightLeftReefRotLeft = aprilTagSevenLeftReefRotLeft.rotateAround(centerOfRightReef.getTranslation(), Rotation2d.fromDegrees(60));//new Pose2d(13.8428,5.1544,Rotation2d.fromDegrees(0));//red side
@@ -175,8 +175,8 @@ public final class Constants
     public static final List<Pose2d> rightReefLocationsRotLeft = List.of(aprilTagSixRightReefRotLeft,aprilTagSevenRightReefRotLeft,aprilTagEightRightReefRotLeft,aprilTagNineRightReefRotLeft,aprilTagTenRightReefRotLeft,aprilTagElevenRightReefRotLeft,aprilTagSeventeenRightReefRotLeft,aprilTagEighteenRightReefRotLeft,aprilTagNineteenRightReefRotLeft,aprilTagTwentyRightReefRotLeft,aprilTagTwentyOneRightReefRotLeft,aprilTagTwentyTwoRightReefRotLeft);
 
     //Right Side of Robot Facing Reef
-    public static final Pose2d aprilTagSevenLeftReefRotRight = aprilTagSevenLeftReefRotLeft.transformBy(new Transform2d(0,0.2,new Rotation2d()));//red side //new Pose2d(14.474,3.968,Rotation2d.fromDegrees(0));
-    public static final Pose2d aprilTagSevenRightReefRotRight = aprilTagSevenRightReefRotLeft.transformBy(new Transform2d(0,0.2,new Rotation2d()));//new Pose2d(14.46,4.098,Rotation2d.fromDegrees(0));//red side
+    public static final Pose2d aprilTagSevenLeftReefRotRight = aprilTagSevenLeftReefRotLeft.transformBy(new Transform2d(0,0.27,new Rotation2d()));//red side //new Pose2d(14.474,3.968,Rotation2d.fromDegrees(0));
+    public static final Pose2d aprilTagSevenRightReefRotRight = aprilTagSevenRightReefRotLeft.transformBy(new Transform2d(0,0.27,new Rotation2d()));//new Pose2d(14.46,4.098,Rotation2d.fromDegrees(0));//red side
 
     public static final Pose2d aprilTagSixLeftReefRotRight =aprilTagSevenLeftReefRotRight.rotateAround(centerOfRightReef.getTranslation(), Rotation2d.fromDegrees(300));
     public static final Pose2d aprilTagSixRightReefRotRight = aprilTagSevenRightReefRotRight.rotateAround(centerOfRightReef.getTranslation(), Rotation2d.fromDegrees(300));
@@ -189,8 +189,8 @@ public final class Constants
     public static final Pose2d aprilTagElevenLeftReefRotRight = aprilTagSevenLeftReefRotRight.rotateAround(centerOfRightReef.getTranslation(), Rotation2d.fromDegrees(240));
     public static final Pose2d aprilTagElevenRightReefRotRight = aprilTagSevenRightReefRotRight.rotateAround(centerOfRightReef.getTranslation(), Rotation2d.fromDegrees(240));
 
-    public static final Pose2d aprilTagTwentyOneLeftReefRotRight = aprilTagTwentyOneLeftReefRotLeft.transformBy(new Transform2d(0,0.2,new Rotation2d()));//red side
-    public static final Pose2d aprilTagTwentyOneRightReefRotRight = aprilTagTwentyOneRightReefRotLeft.transformBy(new Transform2d(0,0.2,new Rotation2d()));//red side
+    public static final Pose2d aprilTagTwentyOneLeftReefRotRight = aprilTagTwentyOneLeftReefRotLeft.transformBy(new Transform2d(0,0.27,new Rotation2d()));//red side
+    public static final Pose2d aprilTagTwentyOneRightReefRotRight = aprilTagTwentyOneRightReefRotLeft.transformBy(new Transform2d(0,0.27,new Rotation2d()));//red side
 
     public static final Pose2d aprilTagSeventeenLeftReefRotRight = aprilTagTwentyOneLeftReefRotRight.rotateAround(centerOfLeftReef.getTranslation(), Rotation2d.fromDegrees(240));
     public static final Pose2d aprilTagSeventeenRightReefRotRight = aprilTagTwentyOneRightReefRotRight.rotateAround(centerOfLeftReef.getTranslation(), Rotation2d.fromDegrees(240));

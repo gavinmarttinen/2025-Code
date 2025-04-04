@@ -1154,25 +1154,25 @@ public double getClosestAprilTagRotationPIDAutoTurn(){
  public double getClosestReefPostLeftXDistance(){
   Pose2d closestReefLeft = getPose().nearest(left?Field.leftReefLocationsRotLeft:Field.leftReefLocationsRotRight);
   double x = closestReefLeft.getX()-getPose().getX();
-  return MathUtil.clamp(x, -1, 1);
+  return MathUtil.clamp(x, -0.5, 0.5);
 }
 
 public double getClosestReefPostLeftYDistance(){
   Pose2d closestReefLeft = getPose().nearest(left?Field.leftReefLocationsRotLeft:Field.leftReefLocationsRotRight);
   double y = closestReefLeft.getY()-getPose().getY();
-  return MathUtil.clamp(y, -1, 1);
+  return MathUtil.clamp(y, -0.5, 0.5);
 }
 
 public double getClosestReefPostRightXDistance(){
   Pose2d closestReefRight = getPose().nearest(left?Field.rightReefLocationsRotLeft:Field.rightReefLocationsRotRight);
   double x = closestReefRight.getX()-getPose().getX();
-  return MathUtil.clamp(x, -1, 1);
+  return MathUtil.clamp(x, -0.5, 0.5);
 }
 
 public double getClosestReefPostRightYDistance(){
   Pose2d closestReefRight = getPose().nearest(left?Field.rightReefLocationsRotLeft:Field.rightReefLocationsRotRight);
   double y = closestReefRight.getY()-getPose().getY();
-  return MathUtil.clamp(y, -1, 1);
+  return MathUtil.clamp(y, -0.5, 0.5);
 }
 
 public boolean isInDistanceToleranceRight(){

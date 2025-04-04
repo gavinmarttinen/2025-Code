@@ -13,6 +13,12 @@
                 "data": {
                   "waitTime": 1.0
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeL1"
+                }
               }
             ]
           }
@@ -37,12 +43,6 @@
                 "type": "named",
                 "data": {
                   "name": "PreScoreLeft"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "climberOut"
                 }
               }
             ]

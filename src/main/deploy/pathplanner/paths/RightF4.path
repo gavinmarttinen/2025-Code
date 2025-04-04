@@ -33,17 +33,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "climberOut",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "climberOut"
-        }
-      }
-    },
-    {
       "name": "IntakeL1",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,

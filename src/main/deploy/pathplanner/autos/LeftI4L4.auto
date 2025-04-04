@@ -42,9 +42,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "runIntakeWithSensor"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "runIntakeWithSensor"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.0
+                }
+              }
+            ]
           }
         },
         {
