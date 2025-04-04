@@ -42,6 +42,17 @@
           "name": "IntakeIn"
         }
       }
+    },
+    {
+      "name": "VerticalPosition",
+      "waypointRelativePos": 0.8,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "VerticalPosition"
+        }
+      }
     }
   ],
   "globalConstraints": {

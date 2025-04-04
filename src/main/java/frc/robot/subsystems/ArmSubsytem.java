@@ -15,7 +15,7 @@ public class ArmSubsytem extends SubsystemBase{
 public ArmSubsytem() {
     pidController.enableContinuousInput(0, 1);
    armMotor.setInverted(false);
-   pidController.setTolerance(0);
+   pidController.setTolerance(0.0);
     
 }
 
