@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.264864864864865,
-        "y": 7.088344594594593
+        "x": 1.422972972972973,
+        "y": 6.969763513513512
       },
       "prevControl": {
-        "x": 2.481398955773951,
-        "y": 6.370390049140048
+        "x": 2.639507063882059,
+        "y": 6.251808968058967
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,23 +34,12 @@
   "eventMarkers": [
     {
       "name": "IntakeIn",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0.01,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "autoIntakeIn"
-        }
-      }
-    },
-    {
-      "name": "VerticalPosition",
-      "waypointRelativePos": 0.8,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "VerticalPosition"
+          "name": "IntakeIn"
         }
       }
     }
