@@ -5,19 +5,25 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "LeftI4"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "driveToLeftReefPost"
+                  "name": "IntakeL1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "driveToJPost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4Height"
                 }
               },
               {
@@ -32,13 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "VerticalPosition"
+            "name": "VerticalPositionWithTimeout"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ISource"
+            "pathName": "JSource"
           }
         },
         {
@@ -54,7 +60,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.0
+                  "waitTime": 0.75
                 }
               }
             ]
@@ -75,7 +81,50 @@
         {
           "type": "named",
           "data": {
-            "name": "VerticalPosition"
+            "name": "VerticalPositionWithTimeout"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LSource"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "runIntakeWithSensor"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.75
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SourceK4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveToLeftReefPost"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VerticalPositionWithTimeout"
           }
         }
       ]

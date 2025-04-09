@@ -1174,6 +1174,16 @@ public double getClosestReefPostRightYDistance(){
   double y = closestReefRight.getY()-getPose().getY();
   return MathUtil.clamp(y, -0.5, 0.5);
 }
+public double getJPostXDistance(){
+Pose2d JPost = Field.aprilTagTwentyRightReefRotLeft;
+double x = JPost.getX()-getPose().getX();
+return MathUtil.clamp(x, -0.5, 0.5);
+}
+public double getJPostYDistance(){
+  Pose2d JPost = Field.aprilTagTwentyRightReefRotLeft;
+  double y = JPost.getY()-getPose().getY();
+  return MathUtil.clamp(y, -0.5, 0.5);
+}
 
 public boolean isInDistanceToleranceRight(){
   if(Math.abs(getClosestReefPostRightXDistance())<0.02&&Math.abs(getClosestReefPostRightYDistance())<.02){

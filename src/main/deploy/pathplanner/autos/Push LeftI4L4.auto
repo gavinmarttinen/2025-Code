@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LeftI4"
+                  "pathName": "LeftJ4"
                 }
               }
             ]
@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ISource"
+            "pathName": "JSource"
           }
         },
         {

@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RightE4"
+            "pathName": "LeftJ4"
           }
         },
         {
@@ -23,7 +23,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PreScoreRight"
+                  "name": "PreScoreLeft"
                 }
               }
             ]
@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ESource"
+            "pathName": "JSource"
           }
         },
         {
@@ -63,13 +63,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SourceC4"
+            "pathName": "SourceL4"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveToLeftReefPost"
+            "name": "driveToRightReefPost"
           }
         },
         {
