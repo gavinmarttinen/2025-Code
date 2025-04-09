@@ -8,24 +8,40 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.936993243243243,
-        "y": 6.3274493243243235
+        "x": 6.492314189184424,
+        "y": 6.327449324327729
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3439189189189187,
-        "y": 7.108108108108107
+        "x": 5.849999999997229,
+        "y": 6.989527027024119
       },
       "prevControl": {
-        "x": 2.67795608108108,
-        "y": 6.1298141891891875
+        "x": 6.2794137016200615,
+        "y": 6.849901712999516
+      },
+      "nextControl": {
+        "x": 4.239273648645878,
+        "y": 7.513260135132227
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.788597972968208,
+        "y": 7.335388513516917
+      },
+      "prevControl": {
+        "x": 3.6463682432384785,
+        "y": 7.315625000003404
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BS"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,16 +49,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "StowHeight Trigger",
-      "waypointRelativePos": 0.0,
+      "name": "IntakeIn",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "StowHeight Trigger",
-      "waypointRelativePos": 0.9353582554517094,
-      "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeIn"
+        }
+      }
     }
   ],
   "globalConstraints": {

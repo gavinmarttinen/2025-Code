@@ -3,29 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5316722972972974,
-        "y": 7.147635135135134
+        "x": 1.7589527027027025,
+        "y": 7.295861486486485
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5593749999999993,
-        "y": 6.9302364864864865
+        "x": 2.7372466216216225,
+        "y": 7.335388513513512
       },
       "isLocked": false,
-      "linkedName": "BS"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.5574324324324325,
-        "y": 5.368918918918919
+        "x": 5.840118243243243,
+        "y": 7.127871621621621
       },
       "prevControl": {
-        "x": 2.687837837837838,
-        "y": 6.189104729729729
+        "x": 4.27510362485749,
+        "y": 7.475652647929565
+      },
+      "nextControl": {
+        "x": 7.263091216216214,
+        "y": 6.811655405405405
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.978462837837838,
+        "y": 3.728547297297297
+      },
+      "prevControl": {
+        "x": 5.958699324324324,
+        "y": 3.115878378378378
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "L"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -34,7 +50,7 @@
   "eventMarkers": [
     {
       "name": "grabCoral",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -56,7 +72,7 @@
     },
     {
       "name": "L4Height",
-      "waypointRelativePos": 0.9900332225913622,
+      "waypointRelativePos": 0.99,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -75,14 +91,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.8,
-    "rotation": -149.53445508054003
+    "velocity": 0,
+    "rotation": 89.40319054877082
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 125.00000000000001
+    "rotation": 122.81634341401264
   },
   "useDefaultConstraints": true
 }

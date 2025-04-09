@@ -44,7 +44,44 @@
         {
           "type": "path",
           "data": {
-            "pathName": "H4 Right Source"
+            "pathName": "H4 Left Source"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "runIntakeWithSensor"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.75
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SourceG4 Left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveToRightReefPost"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VerticalPosition"
           }
         }
       ]

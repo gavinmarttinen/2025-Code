@@ -52,7 +52,12 @@
       "name": "IntakeIn",
       "waypointRelativePos": 0.01,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeIn"
+        }
+      }
     }
   ],
   "globalConstraints": {
