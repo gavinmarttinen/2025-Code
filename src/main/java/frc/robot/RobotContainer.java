@@ -164,6 +164,8 @@ SwerveInputStream driveToRightReefPost = SwerveInputStream.of(drivebase.getSwerv
 
 SwerveInputStream driveToJPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.8*drivebase.getJPostXDistance(), ()->0.8*drivebase.getJPostYDistance());
 
+SwerveInputStream driveToEPost = SwerveInputStream.of(drivebase.getSwerveDrive(), ()->0.8*drivebase.getEPostXDistance(), ()->0.8*drivebase.getEPostYDistance());
+
 SwerveInputStream autoTurnToReef = SwerveInputStream.of(drivebase.getSwerveDrive(),
 () -> driverController.getLeftY() * -1,
 () -> driverController.getLeftX() * -1)
@@ -231,6 +233,9 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceLeft()));
 
       NamedCommands.registerCommand("driveToJPost", drivebase.driveFieldOriented(driveToJPost.withControllerRotationAxis(()-> 
+      drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceRight()));
+      
+      NamedCommands.registerCommand("driveToEPost", drivebase.driveFieldOriented(driveToEPost.withControllerRotationAxis(()-> 
       drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceRight()));
 
 

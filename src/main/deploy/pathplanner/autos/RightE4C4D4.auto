@@ -1,0 +1,136 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "driveToEPost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeL1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4Height"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PreScoreRight"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VerticalPositionWithTimeout"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ESource"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "runIntakeWithSensor"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.75
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SourceC4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveToRightReefPost"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VerticalPositionWithTimeout"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSource"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "runIntakeWithSensor"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.75
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SourceD4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveToLeftReefPost"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VerticalPositionWithTimeout"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": false,
+  "folder": null,
+  "choreoAuto": false
+}

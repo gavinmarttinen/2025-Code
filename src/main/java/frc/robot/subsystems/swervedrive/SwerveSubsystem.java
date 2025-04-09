@@ -1175,15 +1175,26 @@ public double getClosestReefPostRightYDistance(){
   return MathUtil.clamp(y, -0.5, 0.5);
 }
 public double getJPostXDistance(){
-Pose2d JPost = Field.aprilTagTwentyRightReefRotLeft;
+Pose2d JPost = getPose().nearest(List.of(Field.aprilTagTwentyRightReefRotLeft,Field.aprilTagElevenRightReefRotLeft));
 double x = JPost.getX()-getPose().getX();
 return MathUtil.clamp(x, -0.5, 0.5);
 }
 public double getJPostYDistance(){
-  Pose2d JPost = Field.aprilTagTwentyRightReefRotLeft;
+  Pose2d JPost = getPose().nearest(List.of(Field.aprilTagTwentyRightReefRotLeft,Field.aprilTagElevenRightReefRotLeft));
   double y = JPost.getY()-getPose().getY();
   return MathUtil.clamp(y, -0.5, 0.5);
 }
+
+public double getEPostXDistance(){
+  Pose2d EPost = getPose().nearest(List.of(Field.aprilTagTwentyTwoLeftReefRotRight,Field.aprilTagNineLeftReefRotRight));
+  double x = EPost.getX()-getPose().getX();
+  return MathUtil.clamp(x, -0.5, 0.5);
+  }
+  public double getEPostYDistance(){
+    Pose2d EPost = getPose().nearest(List.of(Field.aprilTagTwentyTwoLeftReefRotRight,Field.aprilTagNineLeftReefRotRight));
+    double y = EPost.getY()-getPose().getY();
+    return MathUtil.clamp(y, -0.5, 0.5);
+  }
 
 public boolean isInDistanceToleranceRight(){
   if(Math.abs(getClosestReefPostRightXDistance())<0.02&&Math.abs(getClosestReefPostRightYDistance())<.02){

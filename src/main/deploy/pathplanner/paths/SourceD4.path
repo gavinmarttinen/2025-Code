@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.5684375,
-        "y": 6.3234517045454535
+        "x": 1.3142736486486484,
+        "y": 0.9320101351351354
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.584359104209986,
-        "y": 5.942867976583591
+        "x": 1.976491130392873,
+        "y": 1.7212101980825056
       },
       "isLocked": false,
-      "linkedName": "Left Start"
+      "linkedName": "Right Source"
     },
     {
       "anchor": {
-        "x": 5.049577702702703,
-        "y": 5.3788006756756745
+        "x": 3.8242398648648646,
+        "y": 2.5427364864864863
       },
       "prevControl": {
-        "x": 5.301819849448161,
-        "y": 5.432565781004925
+        "x": 3.153538780441064,
+        "y": 1.7186348320299891
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "J"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,19 +33,30 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "IntakeL1",
-      "waypointRelativePos": 0,
+      "name": "grabCoral",
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "IntakeL1"
+          "name": "grabCoral"
+        }
+      }
+    },
+    {
+      "name": "PreScoreRight",
+      "waypointRelativePos": 0.45,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PreScoreRight"
         }
       }
     },
     {
       "name": "L4Height",
-      "waypointRelativePos": 0.1,
+      "waypointRelativePos": 0.9900332225913622,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -53,36 +64,25 @@
           "name": "L4Height"
         }
       }
-    },
-    {
-      "name": "PreScoreLeft",
-      "waypointRelativePos": 0.1,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "PreScoreLeft"
-        }
-      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.5,
-    "rotation": 148.5231606504161
+    "velocity": 0.8,
+    "rotation": 148.695876504409
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 137.02136494035605
+    "rotation": -128.26398878588068
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
