@@ -36,12 +36,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "StowHeight"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "H4 Left Source"
@@ -75,7 +69,7 @@
         {
           "type": "named",
           "data": {
-            "name": "driveToRightReefPost"
+            "name": "driveToLeftReefPost"
           }
         },
         {

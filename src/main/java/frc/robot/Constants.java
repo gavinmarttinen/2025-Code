@@ -84,9 +84,9 @@ public final class Constants
     public static final int armMotorID = 16;
     public static final int armEncoderID = 9;
     public static final double VerticalPosition = 0.017; //0.0253;
-    public static final double preScoreRight = .396;
+    public static final double preScoreRight = .357;
     public static final double preScoreLeft = .643;
-    public static final double descorePosition = .81;
+    public static final double descorePosition = .24;
     public static final double P = 2.0;
     public static final double I = 0.0;
     public static final double D = 0;

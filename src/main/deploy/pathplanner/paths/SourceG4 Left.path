@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.7589527027027025,
-        "y": 7.295861486486485
+        "x": 1.6403716216216213,
+        "y": 7.285979729729729
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7372466216216225,
-        "y": 7.335388513513512
+        "x": 2.7668918918918957,
+        "y": 7.167398648648648
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Far Left Source"
     },
     {
       "anchor": {
-        "x": 5.840118243243243,
-        "y": 7.127871621621621
+        "x": 5.504138513513514,
+        "y": 6.851182432432431
       },
       "prevControl": {
-        "x": 4.27510362485749,
-        "y": 7.475652647929565
+        "x": 4.0061779637346,
+        "y": 7.22836674352784
       },
       "nextControl": {
-        "x": 7.263091216216214,
-        "y": 6.811655405405405
+        "x": 6.877702702702703,
+        "y": 6.505320945945946
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.978462837837838,
-        "y": 3.728547297297297
+        "x": 5.879645270270271,
+        "y": 3.7878378378378375
       },
       "prevControl": {
-        "x": 5.958699324324324,
-        "y": 3.115878378378378
+        "x": 6.640540540540541,
+        "y": 3.9261824324324315
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +61,7 @@
     },
     {
       "name": "PreScoreLeft",
-      "waypointRelativePos": 0.45,
+      "waypointRelativePos": 1.3,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -72,7 +72,7 @@
     },
     {
       "name": "L4Height",
-      "waypointRelativePos": 0.99,
+      "waypointRelativePos": 1.5,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -83,8 +83,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
-    "maxAcceleration": 2.5,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,
@@ -98,7 +98,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 122.81634341401264
+    "rotation": 125.00000000000001
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

@@ -236,7 +236,7 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceRight()));
       
       NamedCommands.registerCommand("driveToEPost", drivebase.driveFieldOriented(driveToEPost.withControllerRotationAxis(()-> 
-      drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceRight()));
+      drivebase.getClosestAprilTagRotationPID())).until(()->drivebase.isInDistanceToleranceLeft()));
 
 
       NamedCommands.registerCommand("climberOut", Commands.run(()->climberSubsystem.climberOut(), climberSubsystem).until(()->climberSubsystem.isClimberOut()));

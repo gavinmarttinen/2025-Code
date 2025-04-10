@@ -3,38 +3,61 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.73224929244894,
-        "y": 3.6
+        "x": 5.87,
+        "y": 3.9
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.7097836637090325,
-        "y": 3.848988544968078
+        "x": 7.042913704768185,
+        "y": 3.9483556938776863
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.8598817567567565,
-        "y": 3.866891891891891
+        "x": 5.77,
+        "y": 4.2
       },
       "prevControl": {
-        "x": 5.888550663559371,
-        "y": 3.6185411443940367
+        "x": 6.31236164828223,
+        "y": 4.260713148403281
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Descore"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "L3Height",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L3Height"
+        }
+      }
+    },
+    {
+      "name": "PreScoreRight",
+      "waypointRelativePos": 0.15946843853821668,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PreScoreRight"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
-    "maxAcceleration": 2.5,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,
@@ -48,7 +71,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -90.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

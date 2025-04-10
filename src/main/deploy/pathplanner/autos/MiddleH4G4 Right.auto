@@ -23,7 +23,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PreScoreLeft"
+                  "name": "PreScoreRight"
                 }
               }
             ]
@@ -33,12 +33,6 @@
           "type": "named",
           "data": {
             "name": "VerticalPosition"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StowHeight"
           }
         },
         {
