@@ -83,10 +83,11 @@ public final class Constants
 
     public static final int armMotorID = 16;
     public static final int armEncoderID = 9;
-    public static final double VerticalPosition = 0.017; //0.0253;
-    public static final double preScoreRight = .357;
-    public static final double preScoreLeft = .643;
+    public static final double VerticalPosition = 0.346; //0.0253;
+    public static final double preScoreRight = .683;
+    public static final double preScoreLeft = 0;
     public static final double descorePosition = .24;
+
     public static final double P = 2.0;
     public static final double I = 0.0;
     public static final double D = 0;
@@ -96,8 +97,8 @@ public final class Constants
     public static final int climberMotorID = 17;
     public static final int climberEncoderID = 46;
     public static final double climberMotorSpeed = 1;
-    public static final double climberOutPosition = 0.863;
-    public static final double climberInPosition = 0.362;//0.393; //0.320;
+    public static final double climberOutPosition = 0.904;
+    public static final double climberInPosition = 0.403;
     public static final double P = 9;
     public static final double I = 0;
     public static final double D = 0;
@@ -109,10 +110,10 @@ public final class Constants
     public static final int intakeEncoderID = 2;
     public static final double rollerMotorSpeed = 1;
     public static final double pivotMotorSpeed = .2;
-    public static final double intakeOutPosition = 0.218;
-    public static final double intakeL1Position = 0.495;
-    public static final double intakeInPosition = 0.607;
-    public static final double algaePosition = 0.412;
+    public static final double intakeOutPosition = 0.2974;
+    public static final double intakeL1Position = 0.572;
+    public static final double intakeInPosition = 0.7024;
+    public static final double algaePosition = 0.494;
     public static final double outputCurrent = 22; //17;
     public static final double P = 2;
     public static final double I = 0;

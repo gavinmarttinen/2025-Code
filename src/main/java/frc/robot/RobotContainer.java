@@ -52,7 +52,7 @@ public class RobotContainer
     Commands.run(()->intakeSubsystem.deployIntake(),intakeSubsystem).until(()->intakeSubsystem.isCoralDetectedAndPivotAtSetpoint())); //end of parallel
 
   private final Command intakeInCommand = new SequentialCommandGroup(
-    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem).until(()->elevatorSubsystem.elevatorAtSetpoint()),
+    Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem).withTimeout(.1),
     Commands.run(()->intakeSubsystem.intakeIn(), intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),
     new ParallelCommandGroup(
     Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(.3),
