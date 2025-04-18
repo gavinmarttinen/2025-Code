@@ -343,7 +343,7 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
       Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem)))
       .onFalse(Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem));
 
-       driverController.R1().whileTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).whileFalse(armSubsystem.getDefaultCommand());
+       //driverController.R1().whileTrue(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem)).whileFalse(armSubsystem.getDefaultCommand());
 
        driverController.cross().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       // driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTag(),drivebase));
@@ -352,7 +352,7 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
        driverController.L2().whileTrue(drivebase.driveFieldOriented(driveToLeftReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
        driverController.R2().whileTrue(drivebase.driveFieldOriented(driveToRightReefPost.withControllerRotationAxis(()->drivebase.getClosestAprilTagRotationPID())));
        driverController.circle().onTrue(Commands.run(()->climberSubsystem.climberOut(),climberSubsystem));
-       driverController.triangle().onTrue(new SequentialCommandGroup(Commands.run(()->intakeSubsystem.setMotorPosition(IntakeConstants.intakeL1Position), intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),Commands.run(()->intakeSubsystem.stopPivotMotor(), intakeSubsystem).withTimeout(0.1),
+       driverController.triangle().onTrue(new SequentialCommandGroup(Commands.run(()->intakeSubsystem.setMotorPosition(IntakeConstants.intakeClimbPosition), intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint()),Commands.run(()->intakeSubsystem.stopPivotMotor(), intakeSubsystem).withTimeout(0.1),
        new ParallelCommandGroup(Commands.run(()->elevatorSubsystem.setMotor(0), elevatorSubsystem),
        Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition+.5), armSubsystem))));
        // driverController.R1().whileTrue(Commands.run(()->autoAlignToClosestAprilTagRight()));

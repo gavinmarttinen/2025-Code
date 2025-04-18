@@ -73,9 +73,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "driveToLeftReefPost"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "driveToLeftReefPost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PreScoreRight"
+                }
+              }
+            ]
           }
         },
         {
@@ -116,9 +129,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "driveToRightReefPost"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "driveToRightReefPost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PreScoreRight"
+                }
+              }
+            ]
           }
         },
         {

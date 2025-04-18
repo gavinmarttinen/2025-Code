@@ -67,9 +67,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "driveToRightReefPost"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "driveToRightReefPost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PreScoreLeft"
+                }
+              }
+            ]
           }
         },
         {
