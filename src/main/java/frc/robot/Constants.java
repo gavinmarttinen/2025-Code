@@ -67,12 +67,12 @@ public final class Constants
     public static final double L4Position = 21.95;
     public static final double highestPosition = 22.67;
     public static final double kS = 0.04087;
-    public static final double kV = 0.12261;
+    public static final double kV = 0.145; //0.12261
     public static final double kA = 0.0033489;
-    public static final double kP = 2;
+    public static final double kP = 1;
     public static final double kI = 0;
     public static final double kD = 0;
-    public static final double kG = 0.4;
+    public static final double kG = 0.6;
     public static final double CruiseVelocity = 80;
     public static final double Acceleration = 80;
     public static final double Jerk = 1600;
@@ -97,10 +97,10 @@ public final class Constants
     public static final int climberMotorID = 17;
     public static final int climberEncoderID = 46;
     public static final double climberMotorSpeed = 1;
-    public static final double climberOutPosition = 0.884; //0.904;
-    public static final double climberInPosition = 0.389; //0.403;
+    public static final double climberOutPosition = 0.914; //0.904;
+    public static final double climberInPosition = 0.428; //0.403;
     public static final double P = 9;
-    
+
     public static final double I = 0;
     public static final double D = 0;
   }
@@ -113,8 +113,8 @@ public final class Constants
     public static final double pivotMotorSpeed = .2;
     public static final double intakeOutPosition = 0.2974;
     public static final double intakeL1Position = 0.572;
-    public static final double intakeClimbPosition = 0.59;
-    public static final double intakeInPosition = 0.7024;
+    public static final double intakeClimbPosition = 0.61;
+    public static final double intakeInPosition = 0.68;
     public static final double algaePosition = 0.494;
     public static final double outputCurrent = 22; //17;
     public static final double P = 2;

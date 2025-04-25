@@ -1,0 +1,104 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.5514358108108106,
+        "y": 0.8331925675675665
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.529729729729729,
+        "y": 0.8727195945945925
+      },
+      "isLocked": false,
+      "linkedName": "Far Right Source"
+    },
+    {
+      "anchor": {
+        "x": 5.642483108108109,
+        "y": 1.0802364864864864
+      },
+      "prevControl": {
+        "x": 3.7280538104973315,
+        "y": 0.6563271420155287
+      },
+      "nextControl": {
+        "x": 7.025929054054054,
+        "y": 1.3865709459459459
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.929054054054054,
+        "y": 4.177
+      },
+      "prevControl": {
+        "x": 6.729476351351351,
+        "y": 3.9497195945945944
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "grabCoral",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "grabCoral"
+        }
+      }
+    },
+    {
+      "name": "PreScoreRight",
+      "waypointRelativePos": 0.45,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PreScoreRight"
+        }
+      }
+    },
+    {
+      "name": "L4Height",
+      "waypointRelativePos": 0.99,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "L4Height"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 360.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.8,
+    "rotation": -90.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -125.00000000000001
+  },
+  "useDefaultConstraints": false
+}

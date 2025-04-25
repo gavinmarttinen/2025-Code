@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RightE4"
+            "pathName": "Right to E4"
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ESource"
+            "pathName": "E to Source"
           }
         },
         {
@@ -63,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SourceC4"
+            "pathName": "Source to C4"
           }
         },
         {

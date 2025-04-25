@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5514358108108106,
-        "y": 0.8331925675675665
+        "x": 1.4,
+        "y": 3.758192567562625
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.529729729729729,
-        "y": 0.8727195945945925
+        "x": 1.7095049297914318,
+        "y": 3.7651709688094432
       },
       "isLocked": false,
-      "linkedName": "Far Right Source"
+      "linkedName": "MiddleLol End"
     },
     {
       "anchor": {
-        "x": 5.642483108108109,
-        "y": 1.0802364864864864
+        "x": 2.776773648648649,
+        "y": 4.034881756756757
       },
       "prevControl": {
-        "x": 3.728053810497331,
-        "y": 0.6563271420155286
-      },
-      "nextControl": {
-        "x": 7.025929054054054,
-        "y": 1.3865709459459459
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 5.929054054054054,
-        "y": 3.8767736486486477
-      },
-      "prevControl": {
-        "x": 6.729476351351351,
-        "y": 3.6494932432432425
+        "x": 1.883026219501803,
+        "y": 4.0222264391564915
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,30 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "grabCoral",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "grabCoral"
-        }
-      }
-    },
-    {
-      "name": "PreScoreRight",
-      "waypointRelativePos": 0.45,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "PreScoreRight"
-        }
-      }
-    },
-    {
       "name": "L4Height",
-      "waypointRelativePos": 0.99,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -80,10 +42,32 @@
           "name": "L4Height"
         }
       }
+    },
+    {
+      "name": "IntakeCoral",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeCoral"
+        }
+      }
+    },
+    {
+      "name": "PreScoreLeft",
+      "waypointRelativePos": 0.5,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PreScoreLeft"
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.5,
+    "maxVelocity": 3.0,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 360.0,
@@ -98,7 +82,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -125.00000000000001
+    "rotation": -90.0
   },
   "useDefaultConstraints": false
 }

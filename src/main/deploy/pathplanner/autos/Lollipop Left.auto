@@ -5,19 +5,19 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Left to A4"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "driveToRightReefPost"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "L4Height"
+                  "name": "driveToLeftReefPost"
                 }
               },
               {
@@ -32,44 +32,50 @@
         {
           "type": "named",
           "data": {
-            "name": "VerticalPosition"
+            "name": "VerticalPositionWithTimeout"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "H4 to Left Source"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "runIntakeWithSensor"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.75
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Source to G4 Left"
+            "pathName": "MiddleLol"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveToLeftReefPost"
+            "name": "IntakeCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleLol to B4"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "driveToRightReefPost"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PreScoreLeft"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4Height"
+                }
+              }
+            ]
           }
         },
         {
@@ -81,7 +87,7 @@
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }

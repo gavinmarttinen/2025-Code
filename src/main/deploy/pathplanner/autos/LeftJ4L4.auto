@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftJ4"
+            "pathName": "Left to J4"
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "JSource"
+            "pathName": "J to Source"
           }
         },
         {
@@ -63,7 +63,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SourceL4"
+            "pathName": "Source to L4"
           }
         },
         {

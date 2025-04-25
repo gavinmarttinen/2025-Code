@@ -5,13 +5,19 @@
     "data": {
       "commands": [
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "driveToRightReefPost"
+                  "name": "driveToLeftReefPost"
                 }
               },
               {
@@ -23,7 +29,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PreScoreLeft"
+                  "name": "PreScoreRight"
                 }
               }
             ]
@@ -38,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "H4 to Left Source"
+            "pathName": "H4 to Right Source"
           }
         },
         {
@@ -63,13 +69,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Source to G4 Left"
+            "pathName": "Source to G4 Right"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveToLeftReefPost"
+            "name": "driveToRightReefPost"
           }
         },
         {

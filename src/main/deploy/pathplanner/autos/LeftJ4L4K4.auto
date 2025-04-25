@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "JSource"
+            "pathName": "J to Source"
           }
         },
         {
@@ -69,7 +69,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SourceL4"
+            "pathName": "Source to L4"
           }
         },
         {
@@ -100,7 +100,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LSource"
+            "pathName": "L to Source"
           }
         },
         {
@@ -125,7 +125,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SourceK4"
+            "pathName": "Source to K4"
           }
         },
         {
