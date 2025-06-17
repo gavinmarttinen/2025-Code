@@ -44,32 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "J to Source"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "runIntakeWithSensor"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.75
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Source to L4"
+            "pathName": "J Source L4"
           }
         },
         {
@@ -100,32 +75,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L to Source"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "runIntakeWithSensor"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.75
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Source to K4"
+            "pathName": "L Source K"
           }
         },
         {

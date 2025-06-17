@@ -44,32 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "E to Source"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "runIntakeWithSensor"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.75
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Source to C4"
+            "pathName": "E Source C4"
           }
         },
         {
@@ -100,32 +75,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C to Source"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "runIntakeWithSensor"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.75
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Source to D4"
+            "pathName": "C Source D4"
           }
         },
         {

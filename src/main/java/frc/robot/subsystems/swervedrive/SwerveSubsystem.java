@@ -819,13 +819,13 @@ LimelightHelpers.SetFiducialIDFiltersOverride("limelight-three", validIDs);
         doRejectUpdatemt3g = true;
       }
       if(mt2 != null){
-      if(mt2.tagCount == 0 || mt2.avgTagDist>3)
+      if(mt2.tagCount == 0 || mt2.avgTagDist>4)
       {
         doRejectUpdate = true;
       }
     }
     if(mt23g != null){
-      if(mt23g.tagCount == 0 || mt23g.avgTagDist>3)
+      if(mt23g.tagCount == 0 || mt23g.avgTagDist>4)
       {
         doRejectUpdatemt3g = true;
       }

@@ -39,7 +39,7 @@ public void stopMotor() {
 
 public void climberOut(){
    climberMotor.set(1);
-   if(encoder.get() > ClimberConstants.climberInPosition&&encoder.get() < ClimberConstants.climberOutPosition){
+   if(encoder.get() > ClimberConstants.climberInPosition&&encoder.get() < ClimberConstants.climberOutPosition+0.1){
       climberMotor.set(0);
    }}
 

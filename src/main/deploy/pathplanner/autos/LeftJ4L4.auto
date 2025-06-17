@@ -38,32 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "J to Source"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "runIntakeWithSensor"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.5
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Source to L4"
+            "pathName": "J Source L4"
           }
         },
         {

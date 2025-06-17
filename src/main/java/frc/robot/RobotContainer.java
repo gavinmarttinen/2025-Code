@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -85,7 +87,37 @@ public class RobotContainer
       Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem),   
       Commands.run(()->intakeSubsystem.intakeIn(),intakeSubsystem)));
 
+      private final Command autoIntakeToPreScoreLeft =  new SequentialCommandGroup(
+        new ParallelCommandGroup(
+        Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).withTimeout(1.5),
+        Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(1.5),
+        Commands.run(()->intakeSubsystem.deployIntake(),intakeSubsystem).withTimeout(2.4)),
+        new SequentialCommandGroup(
+        Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem).withTimeout(.01),
+        Commands.run(()->intakeSubsystem.intakeIn(), intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint())),
+        new ParallelCommandGroup(
+        Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(.3),
+        Commands.run(()->intakeSubsystem.stopRollerMotor(),intakeSubsystem).withTimeout(0.45)),
+        new ParallelCommandGroup(
+        Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed),intakeSubsystem).withTimeout(0.15).andThen(Commands.run(()->intakeSubsystem.setRollerMotor(0),intakeSubsystem).withTimeout(0.1)),
+        Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem).withTimeout(.15)),
+        new ParallelCommandGroup(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreLeft))));
 
+  private final Command autoIntakeToPreScoreRight =  new SequentialCommandGroup(
+  new ParallelCommandGroup(
+  Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition),elevatorSubsystem).withTimeout(1.5),
+  Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.VerticalPosition),armSubsystem).withTimeout(1.5),
+  Commands.run(()->intakeSubsystem.deployIntake(),intakeSubsystem).withTimeout(2.2)),
+  new SequentialCommandGroup(
+  Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.stowPosition), elevatorSubsystem).withTimeout(.01),
+  Commands.run(()->intakeSubsystem.intakeIn(), intakeSubsystem).until(()->intakeSubsystem.pivotAtSetpoint())),
+  new ParallelCommandGroup(
+  Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(.3),
+  Commands.run(()->intakeSubsystem.stopRollerMotor(),intakeSubsystem).withTimeout(0.45)),
+  new ParallelCommandGroup(
+  Commands.run(()->intakeSubsystem.setRollerMotor(-IntakeConstants.rollerMotorSpeed),intakeSubsystem).withTimeout(0.15).andThen(Commands.run(()->intakeSubsystem.setRollerMotor(0),intakeSubsystem).withTimeout(0.1)),
+  Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.L4Position),elevatorSubsystem).withTimeout(.15)),
+  new ParallelCommandGroup(Commands.run(()->armSubsystem.setMotorPosition(ArmConstants.preScoreRight))));
       // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
   // controls are front-left positive
@@ -260,6 +292,10 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
 
       NamedCommands.registerCommand("climberOut", Commands.run(()->climberSubsystem.climberOut(), climberSubsystem));
       
+      NamedCommands.registerCommand("autoIntakeToPreScoreLeft", autoIntakeToPreScoreLeft);
+
+      NamedCommands.registerCommand("autoIntakeToPreScoreRight", autoIntakeToPreScoreRight);
+
       NamedCommands.registerCommand("grabCoral", new SequentialCommandGroup(
       new ParallelCommandGroup(
       Commands.run(()->elevatorSubsystem.setMotorPosition(ElevatorConstants.intakePosition),elevatorSubsystem).withTimeout(0.4),
@@ -276,7 +312,7 @@ Command driveFieldOrientedDirectAngleSim = drivebase.driveFieldOriented(driveDir
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
     
-   autoChooser = AutoBuilder.buildAutoChooser("W1C1");
+   autoChooser = AutoBuilder.buildAutoChooser("LeftJ4L4K4");
     
   
    SmartDashboard.putData("Auto Chooser", autoChooser);
